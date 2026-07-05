@@ -14,6 +14,10 @@ import { cocktail } from "./cocktail";
 import { comb } from "./comb";
 import { oddeven } from "./oddeven";
 import { cycle } from "./cycle";
+import { counting } from "./counting";
+import { radix } from "./radix";
+import { bucket } from "./bucket";
+import { pigeonhole } from "./pigeonhole";
 
 export interface RosterEntry {
   slug: string;
@@ -37,6 +41,10 @@ const sortImpls: Record<string, SortAlgorithm> = {
   comb,
   oddeven,
   cycle,
+  counting,
+  radix,
+  bucket,
+  pigeonhole,
 };
 
 export function getSortAlgorithm(slug: string): SortAlgorithm | undefined {
@@ -61,8 +69,10 @@ export const roster: RosterEntry[] = [
   { slug: "merge", category: "sort", ready: true, accent: "#3ef08a", stable: true, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(n)" } },
   { slug: "quick", category: "sort", ready: true, accent: "#ff5ca0", stable: false, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n²)", space: "O(log n)" } },
   { slug: "heap", category: "sort", ready: true, accent: "#ffc84d", stable: false, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(1)" } },
-  { slug: "counting", category: "sort", ready: false, accent: "#60a5fa", stable: true, complexity: { best: "O(n+k)", avg: "O(n+k)", worst: "O(n+k)", space: "O(k)" } },
-  { slug: "radix", category: "sort", ready: false, accent: "#34d399", stable: true, complexity: { best: "O(nk)", avg: "O(nk)", worst: "O(nk)", space: "O(n+k)" } },
+  { slug: "counting", category: "sort", ready: true, accent: "#60a5fa", stable: true, complexity: { best: "O(n+k)", avg: "O(n+k)", worst: "O(n+k)", space: "O(k)" } },
+  { slug: "radix", category: "sort", ready: true, accent: "#34d399", stable: true, complexity: { best: "O(nk)", avg: "O(nk)", worst: "O(nk)", space: "O(n+k)" } },
+  { slug: "bucket", category: "sort", ready: true, accent: "#fbbf24", stable: true, complexity: { best: "O(n+k)", avg: "O(n+k)", worst: "O(n²)", space: "O(n+k)" } },
+  { slug: "pigeonhole", category: "sort", ready: true, accent: "#f0abfc", stable: true, complexity: { best: "O(n+k)", avg: "O(n+k)", worst: "O(n+k)", space: "O(k)" } },
   { slug: "pancake", category: "sort", ready: false, accent: "#fb923c", stable: false, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
   { slug: "bogo", category: "sort", ready: false, accent: "#ff6b6b", stable: false, complexity: { best: "O(n)", avg: "O(n·n!)", worst: "∞", space: "O(1)" } },
   // busca
