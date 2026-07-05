@@ -5,6 +5,9 @@ import type { AlgoCategory, Complexity, SortAlgorithm } from "@/lib/engine/types
 import { bubble } from "./bubble";
 import { insertion } from "./insertion";
 import { selection } from "./selection";
+import { merge } from "./merge";
+import { quick } from "./quick";
+import { heap } from "./heap";
 
 export interface RosterEntry {
   slug: string;
@@ -19,6 +22,9 @@ const sortImpls: Record<string, SortAlgorithm> = {
   bubble,
   insertion,
   selection,
+  merge,
+  quick,
+  heap,
 };
 
 export function getSortAlgorithm(slug: string): SortAlgorithm | undefined {
@@ -36,9 +42,9 @@ export const roster: RosterEntry[] = [
   { slug: "selection", category: "sort", ready: true, accent: "#a984ff", stable: false, complexity: { best: "O(n²)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
   { slug: "shell", category: "sort", ready: false, accent: "#8b9bff", stable: false, complexity: { best: "O(n log n)", avg: "O(n^1.5)", worst: "O(n²)", space: "O(1)" } },
   { slug: "gnome", category: "sort", ready: false, accent: "#f472b6", stable: true, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
-  { slug: "merge", category: "sort", ready: false, accent: "#3ef08a", stable: true, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(n)" } },
-  { slug: "quick", category: "sort", ready: false, accent: "#ff5ca0", stable: false, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n²)", space: "O(log n)" } },
-  { slug: "heap", category: "sort", ready: false, accent: "#ffc84d", stable: false, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(1)" } },
+  { slug: "merge", category: "sort", ready: true, accent: "#3ef08a", stable: true, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(n)" } },
+  { slug: "quick", category: "sort", ready: true, accent: "#ff5ca0", stable: false, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n²)", space: "O(log n)" } },
+  { slug: "heap", category: "sort", ready: true, accent: "#ffc84d", stable: false, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(1)" } },
   { slug: "counting", category: "sort", ready: false, accent: "#60a5fa", stable: true, complexity: { best: "O(n+k)", avg: "O(n+k)", worst: "O(n+k)", space: "O(k)" } },
   { slug: "radix", category: "sort", ready: false, accent: "#34d399", stable: true, complexity: { best: "O(nk)", avg: "O(nk)", worst: "O(nk)", space: "O(n+k)" } },
   { slug: "pancake", category: "sort", ready: false, accent: "#fb923c", stable: false, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
