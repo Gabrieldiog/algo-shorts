@@ -11,6 +11,9 @@ import { heap } from "./heap";
 import { shell } from "./shell";
 import { gnome } from "./gnome";
 import { cocktail } from "./cocktail";
+import { comb } from "./comb";
+import { oddeven } from "./oddeven";
+import { cycle } from "./cycle";
 
 export interface RosterEntry {
   slug: string;
@@ -31,6 +34,9 @@ const sortImpls: Record<string, SortAlgorithm> = {
   shell,
   gnome,
   cocktail,
+  comb,
+  oddeven,
+  cycle,
 };
 
 export function getSortAlgorithm(slug: string): SortAlgorithm | undefined {
@@ -49,6 +55,9 @@ export const roster: RosterEntry[] = [
   { slug: "shell", category: "sort", ready: true, accent: "#8b9bff", stable: false, complexity: { best: "O(n log n)", avg: "O(n^1.5)", worst: "O(n²)", space: "O(1)" } },
   { slug: "gnome", category: "sort", ready: true, accent: "#f472b6", stable: true, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
   { slug: "cocktail", category: "sort", ready: true, accent: "#22d3ee", stable: true, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
+  { slug: "comb", category: "sort", ready: true, accent: "#4ade80", stable: false, complexity: { best: "O(n log n)", avg: "O(n²/2^p)", worst: "O(n²)", space: "O(1)" } },
+  { slug: "oddeven", category: "sort", ready: true, accent: "#38bdf8", stable: true, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
+  { slug: "cycle", category: "sort", ready: true, accent: "#c084fc", stable: false, complexity: { best: "O(n²)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
   { slug: "merge", category: "sort", ready: true, accent: "#3ef08a", stable: true, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(n)" } },
   { slug: "quick", category: "sort", ready: true, accent: "#ff5ca0", stable: false, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n²)", space: "O(log n)" } },
   { slug: "heap", category: "sort", ready: true, accent: "#ffc84d", stable: false, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(1)" } },

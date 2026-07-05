@@ -91,6 +91,24 @@ export const en: Dict = {
       how: "Bubble sort in both directions: one pass carries the largest to the end, the return trip brings the smallest to the front. That clears the turtles bubble leaves behind.",
       curiosity: "Also called shaker sort. It helps a bit on nearly-sorted lists, but it's still O(n²) — the back-and-forth is what makes it fun to watch.",
     },
+    comb: {
+      name: "Comb Sort",
+      tagline: "Bubble with a comb: a gap that shrinks each pass.",
+      how: "Bubble sort with a gap that starts large and shrinks (factor 1.3). The big gap moves small values stuck at the end from far away.",
+      curiosity: "The gap kills the turtles: small values near the end that bubble drags along slowly. Much faster than bubble, with almost the same code.",
+    },
+    oddeven: {
+      name: "Odd-Even Sort",
+      tagline: "Compares odd pairs and even pairs, alternating.",
+      how: "Alternates two passes: one compares pairs starting at odd indices, the other at even indices. Repeat until no swaps happen.",
+      curiosity: "Designed for parallel hardware: every pair can be compared at once. On a single processor it's just a tidy bubble.",
+    },
+    cycle: {
+      name: "Cycle Sort",
+      tagline: "Writes each value once, straight to its final spot.",
+      how: "For each element it counts how many are smaller to know exactly where it ends up, then writes it directly there, following the permutation's cycles.",
+      curiosity: "It makes the theoretical minimum number of writes to memory. Ideal when writing is expensive (flash memory, say), even though it compares a lot.",
+    },
     merge: {
       name: "Merge Sort",
       tagline: "Splits down the middle, then merges the halves in order.",
