@@ -73,8 +73,24 @@ export const es: Dict = {
       how: "En cada ronda recorre lo que falta buscando el menor y lo intercambia al frente. La parte izquierda queda ordenada, una posición a la vez.",
       curiosity: "Hace como máximo n intercambios, lo mínimo entre los O(n²). Útil cuando escribir en memoria es caro, aunque compare bastante.",
     },
-    shell: { name: "Shell Sort", tagline: "Insertion mejorado: compara primero a los que están lejos." },
-    gnome: { name: "Gnome Sort", tagline: "Un paso al frente, intercambia y retrocede, como un jardinero terco." },
+    shell: {
+      name: "Shell Sort",
+      tagline: "Insertion mejorado: compara primero a los que están lejos.",
+      how: "Ordena por gaps: primero compara elementos lejanos y luego acorta el intervalo hasta ser un insertion normal. Los fuera de lugar llegan cerca de su destino pronto.",
+      curiosity: "Fue uno de los primeros en romper la barrera del O(n²). Su rendimiento depende de la secuencia de gaps, tema de artículos académicos hasta hoy.",
+    },
+    gnome: {
+      name: "Gnome Sort",
+      tagline: "Un paso al frente, intercambia y retrocede, como un jardinero terco.",
+      how: "Avanza comparando el par actual. Si está en orden, sigue; si no, intercambia y retrocede un paso. Repite hasta el final.",
+      curiosity: "Es prácticamente un insertion sort con un solo bucle y sin variables de control. Simple de explicar, difícil de superar en elegancia mínima.",
+    },
+    cocktail: {
+      name: "Cocktail Sort",
+      tagline: "Bubble que va y vuelve, apretando ambos extremos.",
+      how: "Bubble sort en ambos sentidos: una pasada lleva el mayor al final y la vuelta trae el menor al principio. Así resuelve las tortugas que el bubble deja atrás.",
+      curiosity: "También llamado shaker sort. Ayuda algo en listas casi ordenadas, pero sigue siendo O(n²) — el vaivén es lo que lo hace lindo de ver.",
+    },
     merge: {
       name: "Merge Sort",
       tagline: "Divide por la mitad y luego mezcla las partes en orden.",

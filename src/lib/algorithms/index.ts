@@ -8,6 +8,9 @@ import { selection } from "./selection";
 import { merge } from "./merge";
 import { quick } from "./quick";
 import { heap } from "./heap";
+import { shell } from "./shell";
+import { gnome } from "./gnome";
+import { cocktail } from "./cocktail";
 
 export interface RosterEntry {
   slug: string;
@@ -25,6 +28,9 @@ const sortImpls: Record<string, SortAlgorithm> = {
   merge,
   quick,
   heap,
+  shell,
+  gnome,
+  cocktail,
 };
 
 export function getSortAlgorithm(slug: string): SortAlgorithm | undefined {
@@ -40,8 +46,9 @@ export const roster: RosterEntry[] = [
   { slug: "bubble", category: "sort", ready: true, accent: "#5b7fff", stable: true, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
   { slug: "insertion", category: "sort", ready: true, accent: "#2ee6ff", stable: true, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
   { slug: "selection", category: "sort", ready: true, accent: "#a984ff", stable: false, complexity: { best: "O(n²)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
-  { slug: "shell", category: "sort", ready: false, accent: "#8b9bff", stable: false, complexity: { best: "O(n log n)", avg: "O(n^1.5)", worst: "O(n²)", space: "O(1)" } },
-  { slug: "gnome", category: "sort", ready: false, accent: "#f472b6", stable: true, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
+  { slug: "shell", category: "sort", ready: true, accent: "#8b9bff", stable: false, complexity: { best: "O(n log n)", avg: "O(n^1.5)", worst: "O(n²)", space: "O(1)" } },
+  { slug: "gnome", category: "sort", ready: true, accent: "#f472b6", stable: true, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
+  { slug: "cocktail", category: "sort", ready: true, accent: "#22d3ee", stable: true, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
   { slug: "merge", category: "sort", ready: true, accent: "#3ef08a", stable: true, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(n)" } },
   { slug: "quick", category: "sort", ready: true, accent: "#ff5ca0", stable: false, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n²)", space: "O(log n)" } },
   { slug: "heap", category: "sort", ready: true, accent: "#ffc84d", stable: false, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(1)" } },

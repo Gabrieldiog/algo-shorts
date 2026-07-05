@@ -73,8 +73,24 @@ export const pt: Dict = {
       how: "A cada rodada percorre o que falta pra achar o menor e o troca pra frente. A parte da esquerda vai ficando ordenada, uma posição por vez.",
       curiosity: "Faz no máximo n trocas, o mínimo entre os O(n²). Bom quando escrever na memória é caro, mesmo comparando bastante.",
     },
-    shell: { name: "Shell Sort", tagline: "Insertion turbinado: compara quem está longe primeiro." },
-    gnome: { name: "Gnome Sort", tagline: "Um passo à frente, troca e recua, feito jardineiro teimoso." },
+    shell: {
+      name: "Shell Sort",
+      tagline: "Insertion turbinado: compara quem está longe primeiro.",
+      how: "Ordena por gaps: primeiro compara elementos bem distantes, depois encurta o intervalo até virar um insertion normal. Os fora do lugar chegam perto do destino cedo.",
+      curiosity: "Foi um dos primeiros a furar a barreira do O(n²). O desempenho depende da sequência de gaps escolhida, e isso até hoje rende artigo acadêmico.",
+    },
+    gnome: {
+      name: "Gnome Sort",
+      tagline: "Um passo à frente, troca e recua, feito jardineiro teimoso.",
+      how: "Anda pra frente comparando o par atual. Se estiver em ordem, avança; se não, troca e recua um passo. Repete até o fim.",
+      curiosity: "É praticamente um insertion sort escrito com um loop só e sem variável de controle. Simples de explicar, difícil de bater em elegância mínima.",
+    },
+    cocktail: {
+      name: "Cocktail Sort",
+      tagline: "Bubble que vai e volta, apertando os dois extremos.",
+      how: "É o bubble nos dois sentidos: uma passada leva o maior pro fim, a volta traz o menor pro começo. Assim resolve as tartarugas que o bubble deixa pra trás.",
+      curiosity: "Também chamado de shaker sort. Melhora um pouco o bubble em listas quase ordenadas, mas segue O(n²) — bonito de ver justamente pelo vaivém.",
+    },
     merge: {
       name: "Merge Sort",
       tagline: "Divide no meio até sobrar um, depois mescla ordenado.",
