@@ -24,6 +24,10 @@ export type Note =
   | { k: "selectMin"; v: number }
   | { k: "insert"; v: number }
   | { k: "done" }
+  // curiosos
+  | { k: "shuffle" }
+  | { k: "giveUp" }
+  | { k: "flip"; n: number }
   // busca
   | { k: "searchStart"; target: number }
   | { k: "look"; v: number }
