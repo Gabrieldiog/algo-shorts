@@ -3,6 +3,8 @@
 
 import type { AlgoCategory, Complexity, SortAlgorithm } from "@/lib/engine/types";
 import { bubble } from "./bubble";
+import { insertion } from "./insertion";
+import { selection } from "./selection";
 
 export interface RosterEntry {
   slug: string;
@@ -15,6 +17,8 @@ export interface RosterEntry {
 
 const sortImpls: Record<string, SortAlgorithm> = {
   bubble,
+  insertion,
+  selection,
 };
 
 export function getSortAlgorithm(slug: string): SortAlgorithm | undefined {
@@ -28,8 +32,8 @@ export function isReady(slug: string): boolean {
 export const roster: RosterEntry[] = [
   // ordenacao
   { slug: "bubble", category: "sort", ready: true, accent: "#5b7fff", stable: true, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
-  { slug: "insertion", category: "sort", ready: false, accent: "#2ee6ff", stable: true, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
-  { slug: "selection", category: "sort", ready: false, accent: "#a984ff", stable: false, complexity: { best: "O(n²)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
+  { slug: "insertion", category: "sort", ready: true, accent: "#2ee6ff", stable: true, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
+  { slug: "selection", category: "sort", ready: true, accent: "#a984ff", stable: false, complexity: { best: "O(n²)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
   { slug: "shell", category: "sort", ready: false, accent: "#8b9bff", stable: false, complexity: { best: "O(n log n)", avg: "O(n^1.5)", worst: "O(n²)", space: "O(1)" } },
   { slug: "gnome", category: "sort", ready: false, accent: "#f472b6", stable: true, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
   { slug: "merge", category: "sort", ready: false, accent: "#3ef08a", stable: true, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(n)" } },
