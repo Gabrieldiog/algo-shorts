@@ -18,6 +18,8 @@ import { counting } from "./counting";
 import { radix } from "./radix";
 import { bucket } from "./bucket";
 import { pigeonhole } from "./pigeonhole";
+import { pancake } from "./pancake";
+import { bogo } from "./bogo";
 
 export interface RosterEntry {
   slug: string;
@@ -45,6 +47,8 @@ const sortImpls: Record<string, SortAlgorithm> = {
   radix,
   bucket,
   pigeonhole,
+  pancake,
+  bogo,
 };
 
 export function getSortAlgorithm(slug: string): SortAlgorithm | undefined {
@@ -73,8 +77,8 @@ export const roster: RosterEntry[] = [
   { slug: "radix", category: "sort", ready: true, accent: "#34d399", stable: true, complexity: { best: "O(nk)", avg: "O(nk)", worst: "O(nk)", space: "O(n+k)" } },
   { slug: "bucket", category: "sort", ready: true, accent: "#fbbf24", stable: true, complexity: { best: "O(n+k)", avg: "O(n+k)", worst: "O(n²)", space: "O(n+k)" } },
   { slug: "pigeonhole", category: "sort", ready: true, accent: "#f0abfc", stable: true, complexity: { best: "O(n+k)", avg: "O(n+k)", worst: "O(n+k)", space: "O(k)" } },
-  { slug: "pancake", category: "sort", ready: false, accent: "#fb923c", stable: false, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
-  { slug: "bogo", category: "sort", ready: false, accent: "#ff6b6b", stable: false, complexity: { best: "O(n)", avg: "O(n·n!)", worst: "∞", space: "O(1)" } },
+  { slug: "pancake", category: "sort", ready: true, accent: "#fb923c", stable: false, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
+  { slug: "bogo", category: "sort", ready: true, accent: "#ff6b6b", stable: false, complexity: { best: "O(n)", avg: "O(n·n!)", worst: "∞", space: "O(1)" } },
   // busca
   { slug: "linear", category: "search", ready: false, accent: "#38bdf8", complexity: { best: "O(1)", avg: "O(n)", worst: "O(n)", space: "O(1)" } },
   { slug: "binary", category: "search", ready: false, accent: "#a3e635", complexity: { best: "O(1)", avg: "O(log n)", worst: "O(log n)", space: "O(1)" } },

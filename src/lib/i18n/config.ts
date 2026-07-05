@@ -30,6 +30,9 @@ export interface Phrases {
   selectMin: (v: number) => string;
   insert: (v: number) => string;
   done: () => string;
+  shuffle: () => string;
+  giveUp: () => string;
+  flip: (n: number) => string;
   searchStart: (target: number) => string;
   look: (v: number) => string;
   tooLow: (v: number, target: number) => string;
@@ -111,6 +114,12 @@ export function narrate(note: Note, d: Dict): string {
       return p.insert(note.v);
     case "done":
       return p.done();
+    case "shuffle":
+      return p.shuffle();
+    case "giveUp":
+      return p.giveUp();
+    case "flip":
+      return p.flip(note.n);
     case "searchStart":
       return p.searchStart(note.target);
     case "look":
