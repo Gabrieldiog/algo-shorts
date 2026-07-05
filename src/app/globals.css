@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Paleta azul eletrico e neon. O modo escuro e o protagonista; o claro tambem
+   e de primeira. Os --color-* sao sobrescritos em .dark, entao tudo que usa
+   var(--color-*) acompanha a troca de tema. */
+@theme {
+  --color-bg: #eef1fb;
+  --color-surface: #ffffff;
+  --color-surface-2: #e5eafa;
+  --color-ink: #0a0f24;
+  --color-muted: #5a6482;
+  --color-line: #d3dbf2;
+
+  --color-primary: #2f56ff;
+  --color-primary-2: #6b8bff;
+  --color-accent: #0aa6c9;
+
+  --color-compare: #e8890c;
+  --color-swap: #e0338a;
+  --color-sorted: #12a150;
+  --color-pivot: #7c4dff;
+  --color-cursor: #0aa6c9;
+
+  --color-ok: #12a150;
+  --color-erro: #dc2626;
+
+  --font-display: var(--font-unbounded);
+  --font-sans: var(--font-sora);
+  --font-mono: var(--font-jetbrains);
+
+  --radius-xl2: 1.25rem;
+}
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+  --color-bg: #05060f;
+  --color-surface: #0c0e1d;
+  --color-surface-2: #14172e;
+  --color-ink: #e7ecff;
+  --color-muted: #8b93b8;
+  --color-line: #222746;
+
+  --color-primary: #5b7fff;
+  --color-primary-2: #86a4ff;
+  --color-accent: #2ee6ff;
+
+  --color-compare: #ffc84d;
+  --color-swap: #ff5ca0;
+  --color-sorted: #3ef08a;
+  --color-pivot: #a984ff;
+  --color-cursor: #2ee6ff;
+
+  --color-ok: #3ef08a;
+  --color-erro: #ff6b6b;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-height: 100dvh;
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(58% 48% at 12% -5%, color-mix(in srgb, var(--color-primary) 22%, transparent), transparent 68%),
+    radial-gradient(50% 42% at 104% 6%, color-mix(in srgb, var(--color-accent) 16%, transparent), transparent 70%);
+  background-attachment: fixed;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-line) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-line) 55%, transparent) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 35%, transparent 78%);
+  mask-image: radial-gradient(120% 90% at 50% 0%, #000 35%, transparent 78%);
+  opacity: 0.5;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-primary) 32%, transparent);
+  color: var(--color-ink);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
+}
+
+@utility glow-primary {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-primary) 60%, transparent),
+    0 0 22px -6px var(--color-primary),
+    0 0 44px -12px var(--color-primary);
+}
+
+@utility text-glow {
+  text-shadow: 0 0 24px color-mix(in srgb, var(--color-primary) 55%, transparent);
+}
+
+@utility card {
+  background-color: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl2);
+  backdrop-filter: blur(8px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
