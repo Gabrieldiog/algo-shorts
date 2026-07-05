@@ -73,8 +73,24 @@ export const en: Dict = {
       how: "Each round scans the remaining elements for the smallest and swaps it to the front. The left side grows sorted, one slot at a time.",
       curiosity: "It makes at most n swaps, the fewest among the O(n²) crowd. Handy when writing to memory is expensive, even if it compares a lot.",
     },
-    shell: { name: "Shell Sort", tagline: "Insertion on steroids: compares far-apart elements first." },
-    gnome: { name: "Gnome Sort", tagline: "Step forward, swap and step back, like a stubborn gardener." },
+    shell: {
+      name: "Shell Sort",
+      tagline: "Insertion on steroids: compares far-apart elements first.",
+      how: "Sorts by gaps: first compares far-apart elements, then shrinks the gap until it's a plain insertion sort. Out-of-place values reach their neighborhood early.",
+      curiosity: "One of the first algorithms to beat the O(n²) barrier. Its speed hinges on the gap sequence, still a topic of academic papers today.",
+    },
+    gnome: {
+      name: "Gnome Sort",
+      tagline: "Step forward, swap and step back, like a stubborn gardener.",
+      how: "Steps forward comparing the current pair. In order, it moves on; out of order, it swaps and steps back one. Repeat until the end.",
+      curiosity: "It's basically insertion sort with a single loop and no bookkeeping. Simple to explain, hard to beat on minimal elegance.",
+    },
+    cocktail: {
+      name: "Cocktail Sort",
+      tagline: "Bubble that runs both ways, squeezing both ends.",
+      how: "Bubble sort in both directions: one pass carries the largest to the end, the return trip brings the smallest to the front. That clears the turtles bubble leaves behind.",
+      curiosity: "Also called shaker sort. It helps a bit on nearly-sorted lists, but it's still O(n²) — the back-and-forth is what makes it fun to watch.",
+    },
     merge: {
       name: "Merge Sort",
       tagline: "Splits down the middle, then merges the halves in order.",
