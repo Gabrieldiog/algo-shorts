@@ -91,6 +91,24 @@ export const pt: Dict = {
       how: "É o bubble nos dois sentidos: uma passada leva o maior pro fim, a volta traz o menor pro começo. Assim resolve as tartarugas que o bubble deixa pra trás.",
       curiosity: "Também chamado de shaker sort. Melhora um pouco o bubble em listas quase ordenadas, mas segue O(n²) — bonito de ver justamente pelo vaivém.",
     },
+    comb: {
+      name: "Comb Sort",
+      tagline: "Bubble com pente: um gap que encolhe a cada passada.",
+      how: "É o bubble com um gap que começa grande e encolhe (fator 1.3). O gap grande empurra de longe os valores pequenos presos no fim.",
+      curiosity: "O gap serve pra matar as tartarugas: valores pequenos lá no fim que o bubble arrasta devagar. Bem mais rápido que o bubble, com quase o mesmo código.",
+    },
+    oddeven: {
+      name: "Odd-Even Sort",
+      tagline: "Compara pares ímpares e pares, alternando.",
+      how: "Alterna duas passadas: uma compara os pares que começam em índice ímpar, a outra os que começam em par. Repete até não haver troca.",
+      curiosity: "Foi desenhado pra hardware paralelo: cada par pode ser comparado ao mesmo tempo. Num processador só, é só um bubble arrumado.",
+    },
+    cycle: {
+      name: "Cycle Sort",
+      tagline: "Escreve cada valor uma vez só, direto no lugar final.",
+      how: "Pra cada elemento, conta quantos são menores pra saber exatamente onde ele termina, e escreve direto lá, seguindo os ciclos da permutação.",
+      curiosity: "Faz o número mínimo teórico de escritas na memória. Perfeito quando gravar é caro (memória flash, por exemplo), mesmo comparando bastante.",
+    },
     merge: {
       name: "Merge Sort",
       tagline: "Divide no meio até sobrar um, depois mescla ordenado.",
