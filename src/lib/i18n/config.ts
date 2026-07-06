@@ -88,6 +88,8 @@ export interface Dict {
     growthNote: string;
     items: string;
     legend: string;
+    history: string;
+    historyEmpty: string;
     curiosity: string;
     howTitle: string;
     best: string;
