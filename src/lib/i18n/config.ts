@@ -79,6 +79,9 @@ export interface Dict {
     step: string;
     finished: string;
     complexity: string;
+    complexityIntro: string;
+    inTime: string;
+    inMemory: string;
     curiosity: string;
     howTitle: string;
     best: string;
@@ -88,6 +91,7 @@ export interface Dict {
     stability: string;
     target: string;
   };
+  complexityTiers: Record<"constant" | "log" | "linear" | "linearithmic" | "quadratic" | "explosive", { name: string; time: string; space: string }>;
   modes: { bars: string; rainbow: string; dots: string; circle: string };
   race: {
     title: string;
