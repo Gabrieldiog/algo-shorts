@@ -9,7 +9,7 @@ export default function Home() {
   const { d } = useI18n();
 
   return (
-    <div className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
+    <div className="mx-auto max-w-6xl overflow-x-hidden px-4 pb-24 sm:px-6">
       <section className="relative py-16 sm:py-24">
         <motion.p
           initial={{ opacity: 0, y: 10 }}
@@ -24,7 +24,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05 }}
-          className="font-display text-5xl font-extrabold leading-[0.95] tracking-tight sm:text-7xl"
+          className="font-display text-[1.9rem] font-extrabold leading-[1] tracking-tight break-words sm:text-6xl lg:text-7xl"
         >
           {d.home.titleA}
           <br />
@@ -104,7 +104,7 @@ function AlgoCard({ entry, index }: { entry: RosterEntry; index: number }) {
         {heights.map((h, i) => (
           <span
             key={i}
-            className="w-full rounded-t-sm"
+            className="min-w-0 flex-1 rounded-t-sm"
             style={{ height: h * 0.32 + "px", background: entry.accent, opacity: 0.5 + (h / 100) * 0.5 }}
           />
         ))}
