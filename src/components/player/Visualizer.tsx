@@ -14,6 +14,7 @@ import { Ring } from "@/components/viz/Ring";
 import { Controls } from "./Controls";
 import { Character, type Mood } from "./Character";
 import { ComplexityCard } from "./Complexity";
+import { QuantumOdds } from "./QuantumOdds";
 import { MemeBadge } from "@/components/ui/MemeBadge";
 import { useSounds } from "./useSounds";
 
@@ -269,6 +270,12 @@ export function Visualizer({ slug }: { slug: string }) {
           onToggleSound={() => setSoundOn((s) => !s)}
         />
       </div>
+
+      {entry.universeRisk && (
+        <div className="mt-6">
+          <QuantumOdds array={frame.array} />
+        </div>
+      )}
 
       <div className="mt-8 grid gap-4 md:grid-cols-2">
         <ComplexityCard complexity={entry.complexity} stable={entry.stable} />

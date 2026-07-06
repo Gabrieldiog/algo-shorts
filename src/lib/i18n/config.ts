@@ -93,6 +93,13 @@ export interface Dict {
     target: string;
   };
   complexityTiers: Record<"constant" | "log" | "linear" | "linearithmic" | "quadratic" | "explosive", { name: string; time: string; space: string }>;
+  quantum: {
+    title: string;
+    odds: (n: string) => string;
+    note: string;
+    safe: string;
+    flavor: { hope: string; lottery: string; cosmic: string };
+  };
   modes: { bars: string; rainbow: string; dots: string; circle: string };
   race: {
     title: string;

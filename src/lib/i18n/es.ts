@@ -64,6 +64,17 @@ export const es: Dict = {
     quadratic: { name: "cuadrático", time: "Pesado: duplicar la lista multiplica el trabajo por cuatro.", space: "Ocupa espacio proporcional al cuadrado de la lista." },
     explosive: { name: "explosivo", time: "Explota: con pocas decenas de elementos ya es inviable.", space: "El costo de memoria crece sin control." },
   },
+  quantum: {
+    title: "Probabilidad de que el universo sobreviva",
+    odds: (n) => `1 entre ${n} arreglos`,
+    note: "Cada elemento fuera de lugar tiene que caer bien en el barajado. A los que ya están en su sitio, el cuántico no los toca — por eso la probabilidad sube a medida que la lista se acerca a ordenada.",
+    safe: "Ya está ordenado: el universo está a salvo.",
+    flavor: {
+      hope: "Difícil, pero se puede soñar.",
+      lottery: "Como ganar la lotería — más de una vez.",
+      cosmic: "Más fácil apuntar al cielo y acertar un átomo específico.",
+    },
+  },
   modes: { bars: "Barras", rainbow: "Arcoíris", dots: "Puntos", circle: "Anillo" },
   race: {
     title: "Modo carrera",
