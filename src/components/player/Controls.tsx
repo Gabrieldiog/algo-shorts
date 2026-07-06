@@ -93,7 +93,7 @@ function IconButton({ label, onClick, disabled, children }: { label: string; onC
 function Slider({ label, value, min, max, onChange }: { label: string; value: number; min: number; max: number; onChange: (v: number) => void }) {
   return (
     <label className="flex items-center gap-2 text-xs font-medium text-muted">
-      <span className="w-16 shrink-0 uppercase tracking-wide">{label}</span>
+      <span className="shrink-0 uppercase tracking-wide">{label}</span>
       <input
         type="range"
         min={min}
