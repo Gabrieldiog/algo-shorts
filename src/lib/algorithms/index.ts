@@ -25,6 +25,9 @@ import { miracle } from "./miracle";
 import { intelligentdesign } from "./intelligentdesign";
 import { quantumbogo } from "./quantumbogo";
 import { sleep } from "./sleep";
+import { timsort } from "./timsort";
+import { introsort } from "./introsort";
+import { bitonic } from "./bitonic";
 
 export interface RosterEntry {
   slug: string;
@@ -59,6 +62,9 @@ const sortImpls: Record<string, SortAlgorithm> = {
   intelligentdesign,
   quantumbogo,
   sleep,
+  timsort,
+  introsort,
+  bitonic,
 };
 
 export function getSortAlgorithm(slug: string): SortAlgorithm | undefined {
@@ -94,6 +100,9 @@ export const roster: RosterEntry[] = [
   { slug: "quantumbogo", category: "sort", ready: true, accent: "#22d3ee", stable: false, complexity: { best: "O(n)", avg: "O(1)", worst: "O(1)", space: "O(1)" } },
   { slug: "miracle", category: "sort", ready: true, accent: "#e879f9", stable: true, complexity: { best: "O(n)", avg: "∞", worst: "∞", space: "O(1)" } },
   { slug: "intelligentdesign", category: "sort", ready: true, accent: "#c4b5fd", stable: true, complexity: { best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" } },
+  { slug: "timsort", category: "sort", ready: true, accent: "#2dd4bf", stable: true, complexity: { best: "O(n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(n)" } },
+  { slug: "introsort", category: "sort", ready: true, accent: "#f97316", stable: false, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(log n)" } },
+  { slug: "bitonic", category: "sort", ready: true, accent: "#38bdf8", stable: false, complexity: { best: "O(n log²n)", avg: "O(n log²n)", worst: "O(n log²n)", space: "O(1)" } },
   // busca
   { slug: "linear", category: "search", ready: false, accent: "#38bdf8", complexity: { best: "O(1)", avg: "O(n)", worst: "O(n)", space: "O(1)" } },
   { slug: "binary", category: "search", ready: false, accent: "#a3e635", complexity: { best: "O(1)", avg: "O(log n)", worst: "O(log n)", space: "O(1)" } },
