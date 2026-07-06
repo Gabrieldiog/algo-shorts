@@ -8,9 +8,16 @@ import { getSortAlgorithm, rosterEntry } from "@/lib/algorithms";
 import { applyMove, buildFrame, initialFrame } from "@/lib/engine/player";
 import type { Frame, Move } from "@/lib/engine/types";
 import { Bars } from "@/components/viz/Bars";
+import { Rainbow } from "@/components/viz/Rainbow";
+import { Dots } from "@/components/viz/Dots";
+import { Ring } from "@/components/viz/Ring";
 import { Controls } from "./Controls";
 import { Character, type Mood } from "./Character";
 import { useSounds } from "./useSounds";
+
+const VIZ = { bars: Bars, rainbow: Rainbow, dots: Dots, circle: Ring } as const;
+type VizMode = keyof typeof VIZ;
+const MODES: VizMode[] = ["bars", "rainbow", "dots", "circle"];
 
 export function Visualizer({ slug }: { slug: string }) {
   const { d, say } = useI18n();
@@ -19,6 +26,7 @@ export function Visualizer({ slug }: { slug: string }) {
   const text = entry ? d.algos[slug] : undefined;
 
   const [size, setSize] = useState(24);
+  const [mode, setMode] = useState<VizMode>("bars");
   const [input, setInput] = useState<number[] | null>(null);
   const [speed, setSpeed] = useState(55);
   const [soundOn, setSoundOn] = useState(true);
@@ -130,6 +138,7 @@ export function Visualizer({ slug }: { slug: string }) {
 
   const mood: Mood = atEnd ? "done" : frame.swapping.length ? "swap" : frame.comparing.length ? "compare" : "idle";
   const line = frame.note ? say(frame.note) : d.character.intro;
+  const Viz = VIZ[mode];
 
   return (
     <div className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
@@ -154,8 +163,23 @@ export function Visualizer({ slug }: { slug: string }) {
         <p className="mt-1.5 max-w-2xl text-muted">{text.tagline}</p>
       </header>
 
-      <div className="card relative flex h-[300px] items-end p-4 sm:h-[380px]">
-        {input ? <Bars frame={frame} max={max} /> : <div className="h-full w-full animate-pulse rounded-lg bg-surface-2/40" />}
+      <div className="mb-2 flex items-center justify-end gap-1">
+        {MODES.map((m) => (
+          <button
+            key={m}
+            type="button"
+            onClick={() => setMode(m)}
+            aria-pressed={mode === m}
+            className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-colors ${
+              mode === m ? "bg-primary/15 text-primary" : "text-muted hover:text-ink"
+            }`}
+          >
+            {d.modes[m]}
+          </button>
+        ))}
+      </div>
+      <div className="card relative flex h-[300px] items-stretch justify-center p-4 sm:h-[380px]">
+        {input ? <Viz frame={frame} max={max} /> : <div className="h-full w-full animate-pulse rounded-lg bg-surface-2/40" />}
       </div>
 
       <input
@@ -298,6 +322,5 @@ function soundFor(move: Move, frame: Frame, max: number, tone: (v: number, max: 
   if (idx == null) return;
   const v = frame.array[idx];
   if (v == null) return;
-  const type: OscillatorType = move.t === "swap" ? "triangle" : move.t === "markSorted" ? "square" : "sine";
-  tone(v, max, { type, dur: move.t === "markSorted" ? 0.06 : 0.09, vol: move.t === "markSorted" ? 0.04 : 0.05 });
+  tone(v, max, { dur: move.t === "markSorted" ? 0.05 : 0.085, vol: move.t === "markSorted" ? 0.05 : 0.045 });
 }
