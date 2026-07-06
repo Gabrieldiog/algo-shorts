@@ -30,8 +30,47 @@ const TIER_TONE: Record<Tier, string> = {
   explosive: "bg-erro",
 };
 
+// Tamanhos de lista pra dar escala: mostra quantos passos, mais ou menos, pra
+// cada um. E o que faz o O(...) virar numero: quadratico com 1000 itens = 1
+// milhao de passos; log com 1000 = uns 10. Ai a diferenca vira concreta.
+const SIZES = [10, 100, 1000];
+const LOCALE_TAG: Record<string, string> = { pt: "pt-BR", en: "en-US", es: "es-ES" };
+
+function factorial(n: number): number {
+  let r = 1;
+  for (let i = 2; i <= n; i++) {
+    r *= i;
+    if (!isFinite(r)) return Infinity;
+  }
+  return r;
+}
+
+function opsFor(tier: Tier, n: number, rawAvg: string): number {
+  if (rawAvg.includes("∞")) return Infinity;
+  switch (tier) {
+    case "constant":
+      return 1;
+    case "log":
+      return Math.max(1, Math.ceil(Math.log2(n)));
+    case "linear":
+      return n;
+    case "linearithmic":
+      return Math.round(n * Math.log2(n));
+    case "quadratic":
+      return n * n;
+    case "explosive":
+      return factorial(n);
+  }
+}
+
+function fmtOps(v: number, locale: string): string {
+  if (!isFinite(v)) return "∞";
+  if (v < 100000) return Math.round(v).toLocaleString(LOCALE_TAG[locale] ?? "pt-BR");
+  return `10^${Math.floor(Math.log10(v))}`;
+}
+
 export function ComplexityCard({ complexity, stable }: { complexity: Complexity; stable?: boolean }) {
-  const { d } = useI18n();
+  const { d, locale } = useI18n();
   const avgTier = tierOf(complexity.avg);
   const spaceTier = tierOf(complexity.space);
 
@@ -50,6 +89,22 @@ export function ComplexityCard({ complexity, stable }: { complexity: Complexity;
         <Meaning term={d.player.inTime} tier={avgTier} text={d.complexityTiers[avgTier].time} />
         <Meaning term={d.player.inMemory} tier={spaceTier} text={d.complexityTiers[spaceTier].space} />
       </dl>
+
+      <div className="mt-4 rounded-lg border border-line/50 bg-surface-2/30 p-3">
+        <div className="mb-2 flex items-baseline justify-between gap-2">
+          <span className="text-[11px] font-semibold uppercase tracking-wide text-muted">{d.player.growthTitle}</span>
+          <span className="font-mono text-[11px] text-muted">{complexity.avg}</span>
+        </div>
+        <div className="grid grid-cols-3 gap-2 text-center">
+          {SIZES.map((n) => (
+            <div key={n} className="rounded-md bg-surface/50 py-2">
+              <div className="text-[11px] text-muted">{n.toLocaleString(LOCALE_TAG[locale] ?? "pt-BR")} {d.player.items}</div>
+              <div className="mt-0.5 font-mono text-base font-bold text-ink">{fmtOps(opsFor(avgTier, n, complexity.avg), locale)}</div>
+            </div>
+          ))}
+        </div>
+        <p className="mt-2 text-[11px] leading-relaxed text-muted">{d.player.growthNote}</p>
+      </div>
 
       {stable !== undefined && (
         <p className="mt-4 border-t border-line/50 pt-3 text-sm text-muted">

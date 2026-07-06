@@ -8,6 +8,7 @@ import { getPathAlgorithm, rosterEntry } from "@/lib/algorithms";
 import { applyPathStep, cellKey, emptyPathFrame, type GridSpec, type PathFrame } from "@/lib/pathfinding/grid";
 import { Character, type Mood } from "@/components/player/Character";
 import { ComplexityCard } from "@/components/player/Complexity";
+import { HowCard } from "@/components/player/HowCard";
 import { useSounds } from "@/components/player/useSounds";
 
 type SizeKey = "sm" | "md" | "lg";
@@ -341,12 +342,7 @@ export function PathViz({ slug }: { slug: string }) {
       <div className="mt-8 grid gap-4 md:grid-cols-2">
         <ComplexityCard complexity={entry.complexity} />
         <div className="flex flex-col gap-4">
-          {text.how && (
-            <div className="card p-5">
-              <h2 className="mb-2 font-display text-lg font-bold">{d.player.howTitle}</h2>
-              <p className="text-sm leading-relaxed text-muted">{text.how}</p>
-            </div>
-          )}
+          <HowCard how={text.how} steps={text.steps} />
           {text.curiosity && (
             <div className="card border-accent/30 p-5">
               <h2 className="mb-2 font-display text-lg font-bold text-accent">{d.player.curiosity}</h2>
