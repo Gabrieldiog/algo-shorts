@@ -2,6 +2,8 @@
 // O roster e a vitrine da home; ready reflete o que ja roda.
 
 import type { AlgoCategory, Complexity, SearchAlgorithm, SortAlgorithm } from "@/lib/engine/types";
+import type { PathAlgorithm } from "@/lib/pathfinding/grid";
+import { astar, bfs, dfs, dijkstra } from "@/lib/pathfinding/algorithms";
 import { bubble } from "./bubble";
 import { linear } from "./linear";
 import { binary } from "./binary";
@@ -74,6 +76,13 @@ const searchImpls: Record<string, SearchAlgorithm> = {
   binary,
 };
 
+const pathImpls: Record<string, PathAlgorithm> = {
+  bfs,
+  dfs,
+  dijkstra,
+  astar,
+};
+
 export function getSortAlgorithm(slug: string): SortAlgorithm | undefined {
   return sortImpls[slug];
 }
@@ -82,8 +91,12 @@ export function getSearchAlgorithm(slug: string): SearchAlgorithm | undefined {
   return searchImpls[slug];
 }
 
+export function getPathAlgorithm(slug: string): PathAlgorithm | undefined {
+  return pathImpls[slug];
+}
+
 export function isReady(slug: string): boolean {
-  return slug in sortImpls || slug in searchImpls;
+  return slug in sortImpls || slug in searchImpls || slug in pathImpls;
 }
 
 export const roster: RosterEntry[] = [
@@ -118,10 +131,10 @@ export const roster: RosterEntry[] = [
   { slug: "linear", category: "search", ready: true, accent: "#38bdf8", complexity: { best: "O(1)", avg: "O(n)", worst: "O(n)", space: "O(1)" } },
   { slug: "binary", category: "search", ready: true, accent: "#a3e635", complexity: { best: "O(1)", avg: "O(log n)", worst: "O(log n)", space: "O(1)" } },
   // pathfinding
-  { slug: "bfs", category: "path", ready: false, accent: "#5b7fff", complexity: { best: "O(V+E)", avg: "O(V+E)", worst: "O(V+E)", space: "O(V)" } },
-  { slug: "dfs", category: "path", ready: false, accent: "#a984ff", complexity: { best: "O(V+E)", avg: "O(V+E)", worst: "O(V+E)", space: "O(V)" } },
-  { slug: "dijkstra", category: "path", ready: false, accent: "#ffc84d", complexity: { best: "O(E log V)", avg: "O(E log V)", worst: "O(E log V)", space: "O(V)" } },
-  { slug: "astar", category: "path", ready: false, accent: "#ff5ca0", complexity: { best: "O(E)", avg: "O(E log V)", worst: "O(E log V)", space: "O(V)" } },
+  { slug: "bfs", category: "path", ready: true, accent: "#5b7fff", complexity: { best: "O(V+E)", avg: "O(V+E)", worst: "O(V+E)", space: "O(V)" } },
+  { slug: "dfs", category: "path", ready: true, accent: "#a984ff", complexity: { best: "O(V+E)", avg: "O(V+E)", worst: "O(V+E)", space: "O(V)" } },
+  { slug: "dijkstra", category: "path", ready: true, accent: "#ffc84d", complexity: { best: "O(E log V)", avg: "O(E log V)", worst: "O(E log V)", space: "O(V)" } },
+  { slug: "astar", category: "path", ready: true, accent: "#ff5ca0", complexity: { best: "O(E)", avg: "O(E log V)", worst: "O(E log V)", space: "O(V)" } },
 ];
 
 export const CATEGORIES: AlgoCategory[] = ["sort", "search", "path"];

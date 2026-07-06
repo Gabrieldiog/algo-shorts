@@ -102,6 +102,18 @@ export interface Dict {
     cta: string;
   };
   character: { intro: string };
+  path: {
+    exploring: string;
+    found: (n: number) => string;
+    noPath: string;
+    newMaze: string;
+    clearWalls: string;
+    drawHint: string;
+    visited: string;
+    pathLen: string;
+    start: string;
+    end: string;
+  };
   algos: Record<string, AlgoText>;
   phrases: Phrases;
 }
