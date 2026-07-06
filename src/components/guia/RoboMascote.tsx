@@ -6,12 +6,11 @@ import { motion, useMotionValue, useReducedMotion, useSpring, useTransform, useA
 export type Expr = "feliz" | "neutro" | "surpreso";
 
 // Boca por morph nativo do `d`: os tres paths tem a MESMA estrutura (M + um C),
-// entao o Motion interpola so os numeros. Se mudasse a contagem de comandos ele
-// cortaria seco (pesquisa).
+// entao o Motion so interpola os numeros.
 const BOCA: Record<Expr, string> = {
-  neutro: "M99 101 C 103 103, 117 103, 121 101",
-  feliz: "M97 99 C 103 113, 117 113, 123 99",
-  surpreso: "M101 100 C 104 112, 116 112, 119 100",
+  neutro: "M89 112 C 93 114, 107 114, 111 112",
+  feliz: "M86 108 C 93 123, 107 123, 114 108",
+  surpreso: "M91 111 C 94 121, 106 121, 109 111",
 };
 
 const EASE_MIRROR = { repeat: Infinity, repeatType: "mirror", ease: "easeInOut" } as const;
@@ -22,11 +21,11 @@ export function RoboMascote({ expr = "feliz", waving = false, onPoke }: { expr?:
   const floatRef = useRef<SVGGElement>(null);
   const [blink, setBlink] = useState(false);
 
-  // olhos seguem o cursor: pouca amplitude, com mola pra ficar sedoso.
+  // olhos seguem o cursor, com mola pra ficar sedoso.
   const px = useMotionValue(0);
   const py = useMotionValue(0);
-  const irisX = useSpring(useTransform(px, [-1, 1], [-3.4, 3.4]), { stiffness: 140, damping: 16 });
-  const irisY = useSpring(useTransform(py, [-1, 1], [-2.4, 2.4]), { stiffness: 140, damping: 16 });
+  const irisX = useSpring(useTransform(px, [-1, 1], [-4, 4]), { stiffness: 140, damping: 16 });
+  const irisY = useSpring(useTransform(py, [-1, 1], [-3, 3]), { stiffness: 140, damping: 16 });
 
   useEffect(() => {
     if (reduce) return;
@@ -43,7 +42,7 @@ export function RoboMascote({ expr = "feliz", waving = false, onPoke }: { expr?:
     return () => window.removeEventListener("pointermove", onMove);
   }, [reduce, px, py]);
 
-  // deriva/float: tres senoides de periodos nao-multiplos, sem re-render.
+  // float: senoides de periodos nao-multiplos, sem re-render.
   useAnimationFrame((t) => {
     const g = floatRef.current;
     if (!g) return;
@@ -56,19 +55,18 @@ export function RoboMascote({ expr = "feliz", waving = false, onPoke }: { expr?:
     g.style.transform = `translate(${sway}px, ${bob}px)`;
   });
 
-  // piscar em paralelo, com intervalo aleatorio (fora dos variants de emocao).
+  // piscar em paralelo, intervalo aleatorio.
   useEffect(() => {
     if (reduce) return;
     let alive = true;
     let to: ReturnType<typeof setTimeout>;
     const loop = () => {
-      const wait = 2400 + Math.random() * 3600;
       to = setTimeout(() => {
         if (!alive) return;
         setBlink(true);
-        setTimeout(() => alive && setBlink(false), 100);
+        setTimeout(() => alive && setBlink(false), 110);
         loop();
-      }, wait);
+      }, 2400 + Math.random() * 3600);
     };
     loop();
     return () => {
@@ -77,9 +75,7 @@ export function RoboMascote({ expr = "feliz", waving = false, onPoke }: { expr?:
     };
   }, [reduce]);
 
-  const waveArm = waving
-    ? { rotate: [0, -118, -96, -118, -96, -118, 0] }
-    : { rotate: 0 };
+  const waveArm = waving ? { rotate: [0, -118, -96, -118, -96, -118, 0] } : { rotate: 0 };
   const waveTrans = waving
     ? { duration: 1.7, times: [0, 0.16, 0.32, 0.5, 0.66, 0.84, 1], ease: "easeInOut" as const }
     : { type: "spring" as const, stiffness: 120, damping: 14 };
@@ -94,92 +90,161 @@ export function RoboMascote({ expr = "feliz", waving = false, onPoke }: { expr?:
         aria-label="Bit"
         className="block w-full cursor-pointer bg-transparent"
         whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.96 }}
+        whileTap={{ scale: 0.95 }}
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
       >
-        <svg viewBox="0 0 220 262" className="mx-auto w-full max-w-[260px]" style={{ filter: "drop-shadow(0 10px 22px rgba(91,127,255,0.30))" }} role="img" aria-hidden>
+        <svg viewBox="0 0 200 260" className="mx-auto w-full max-w-[320px]" style={{ filter: "drop-shadow(0 8px 14px rgba(20,40,80,0.45))" }} role="img" aria-hidden>
           <defs>
-            <linearGradient id="botBody" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#7d97ff" />
-              <stop offset="1" stopColor="#4b66ef" />
+            <linearGradient id="botBody" x1="0" y1="0" x2="0.25" y2="1">
+              <stop offset="0" stopColor="#8FD3FF" />
+              <stop offset="0.55" stopColor="#3AA0F0" />
+              <stop offset="1" stopColor="#1E6FCB" />
             </linearGradient>
-            <linearGradient id="botLimb" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#5f7bf5" />
-              <stop offset="1" stopColor="#4157d8" />
+            <radialGradient id="botDome" cx="0.5" cy="0.5" r="0.62" fx="0.34" fy="0.28">
+              <stop offset="0" stopColor="#EAF2FF" />
+              <stop offset="0.5" stopColor="#3AA0F0" />
+              <stop offset="0.88" stopColor="#17457F" />
+              <stop offset="1" stopColor="#2E7AD0" />
+            </radialGradient>
+            <linearGradient id="botLimb" x1="0" y1="0" x2="0.3" y2="1">
+              <stop offset="0" stopColor="#6FBAF7" />
+              <stop offset="1" stopColor="#2A6EC9" />
             </linearGradient>
+            <radialGradient id="botChao">
+              <stop offset="0" stopColor="#000000" stopOpacity="0.4" />
+              <stop offset="0.7" stopColor="#000000" stopOpacity="0.13" />
+              <stop offset="1" stopColor="#000000" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="botHalo">
+              <stop offset="0" stopColor="#22E6FF" stopOpacity="0.2" />
+              <stop offset="1" stopColor="#22E6FF" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="botSheen">
+              <stop offset="0" stopColor="#ffffff" stopOpacity="0.92" />
+              <stop offset="0.55" stopColor="#ffffff" stopOpacity="0.22" />
+              <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
+            </radialGradient>
+            <linearGradient id="botGloss" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#ffffff" stopOpacity="0.5" />
+              <stop offset="0.45" stopColor="#ffffff" stopOpacity="0.06" />
+              <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
+            </linearGradient>
+            <linearGradient id="botGlass" x1="0" y1="0" x2="0.2" y2="1">
+              <stop offset="0" stopColor="#0E1730" />
+              <stop offset="1" stopColor="#05070E" />
+            </linearGradient>
+            <radialGradient id="botEye" cx="0.5" cy="0.5" r="0.6" fx="0.36" fy="0.32">
+              <stop offset="0" stopColor="#EAFCFF" />
+              <stop offset="0.6" stopColor="#BEEBFF" />
+              <stop offset="1" stopColor="#7EC6EC" />
+            </radialGradient>
+            <radialGradient id="botIris" cx="0.5" cy="0.5" r="0.6" fx="0.36" fy="0.3">
+              <stop offset="0" stopColor="#8CF8FF" />
+              <stop offset="0.55" stopColor="#29C7F5" />
+              <stop offset="1" stopColor="#1670C8" />
+            </radialGradient>
+            <radialGradient id="botCore" cx="0.5" cy="0.5" r="0.6" fx="0.38" fy="0.32">
+              <stop offset="0" stopColor="#9CFAFF" />
+              <stop offset="0.55" stopColor="#22E6FF" />
+              <stop offset="1" stopColor="#1580C0" />
+            </radialGradient>
           </defs>
 
-          {/* sombra no chao (fica parada) */}
-          <ellipse cx="110" cy="248" rx="46" ry="7" fill="#0a0e1c" opacity="0.45" />
+          {/* halo de presenca + sombra de chao (ficam parados) */}
+          <ellipse cx="100" cy="128" rx="104" ry="112" fill="url(#botHalo)" />
+          <ellipse cx="102" cy="247" rx="60" ry="10" fill="url(#botChao)" />
 
           <g ref={floatRef} style={{ transformBox: "fill-box" }}>
-            <motion.g animate={reduce ? undefined : { rotate: [-2, 2] }} transition={{ duration: 5.4, ...EASE_MIRROR }} style={{ originX: 0.5, originY: 0.62 }}>
+            <motion.g animate={reduce ? undefined : { rotate: [-1.8, 1.8] }} transition={{ duration: 5.4, ...EASE_MIRROR }} style={{ originX: 0.5, originY: 0.62 }}>
               {/* braco esquerdo (atras do corpo) */}
-              <rect x="60" y="132" width="13" height="46" rx="6.5" fill="url(#botLimb)" />
-              <circle cx="66.5" cy="178" r="8" fill="url(#botLimb)" />
+              <g>
+                <rect x="42" y="150" width="19" height="42" rx="9.5" fill="url(#botLimb)" stroke="#16345E" strokeWidth="1.5" />
+                <circle cx="51.5" cy="192" r="11" fill="url(#botLimb)" stroke="#16345E" strokeWidth="1.5" />
+                <ellipse cx="49" cy="160" rx="4.5" ry="7" fill="url(#botSheen)" />
+              </g>
 
               {/* braco direito: acena, pivo no ombro; mao em overlapping action */}
-              <motion.g animate={waveArm} transition={waveTrans} style={{ originX: 0.5, originY: 0.07 }}>
-                <rect x="147" y="132" width="13" height="46" rx="6.5" fill="url(#botLimb)" />
-                <motion.g animate={waving ? { rotate: [0, 16, -12, 16, 0] } : { rotate: 0 }} transition={waving ? { duration: 0.55, repeat: 2, ease: "easeInOut" } : { duration: 0.3 }} style={{ originX: 0.5, originY: 0.15 }}>
-                  <circle cx="153.5" cy="178" r="8.5" fill="url(#botLimb)" />
+              <motion.g animate={waveArm} transition={waveTrans} style={{ originX: 0.5, originY: 0.06 }}>
+                <rect x="139" y="150" width="19" height="42" rx="9.5" fill="url(#botLimb)" stroke="#16345E" strokeWidth="1.5" />
+                <motion.g animate={waving ? { rotate: [0, 16, -12, 16, 0] } : { rotate: 0 }} transition={waving ? { duration: 0.55, repeat: 2, ease: "easeInOut" } : { duration: 0.3 }} style={{ originX: 0.5, originY: 0.12 }}>
+                  <circle cx="148.5" cy="192" r="11" fill="url(#botLimb)" stroke="#16345E" strokeWidth="1.5" />
                 </motion.g>
               </motion.g>
 
               {/* respiracao: corpo inteiro infla de leve, origem nos pes */}
-              <motion.g animate={reduce ? undefined : { scaleY: [1, 1.03], scaleX: [1, 1.015] }} transition={{ duration: 3.6, ...EASE_MIRROR }} style={{ originX: 0.5, originY: 1 }}>
+              <motion.g animate={reduce ? undefined : { scaleY: [1, 1.028], scaleX: [1, 1.012] }} transition={{ duration: 3.6, ...EASE_MIRROR }} style={{ originX: 0.5, originY: 1 }}>
                 {/* pes */}
-                <rect x="86" y="196" width="21" height="15" rx="7" fill="url(#botLimb)" />
-                <rect x="113" y="196" width="21" height="15" rx="7" fill="url(#botLimb)" />
+                <rect x="70" y="222" width="24" height="15" rx="7.5" fill="url(#botLimb)" stroke="#16345E" strokeWidth="1.5" />
+                <rect x="106" y="222" width="24" height="15" rx="7.5" fill="url(#botLimb)" stroke="#16345E" strokeWidth="1.5" />
 
-                {/* corpo */}
-                <rect x="76" y="116" width="68" height="88" rx="28" fill="url(#botBody)" />
-                <rect x="90" y="138" width="40" height="32" rx="11" fill="#0c1226" opacity="0.9" />
-                <circle cx="100" cy="154" r="3" fill="#3ef08a" />
-                <circle cx="110" cy="154" r="3" fill="#2ee6ff" />
-                <circle cx="120" cy="154" r="3" fill="#ffc84d" />
+                {/* corpo (blob) */}
+                <rect x="52" y="130" width="96" height="102" rx="44" fill="url(#botBody)" stroke="#16345E" strokeWidth="2" />
+                {/* oclusao na fresta cabeca-corpo */}
+                <rect x="60" y="130" width="80" height="14" rx="7" fill="#0A1A33" opacity="0.18" />
+                {/* gloss no topo do corpo */}
+                <ellipse cx="100" cy="150" rx="40" ry="20" fill="url(#botGloss)" />
+                {/* sheen especular topo-esquerda */}
+                <ellipse cx="78" cy="152" rx="20" ry="12" fill="url(#botSheen)" transform="rotate(-18 78 152)" />
+                {/* core emissivo do peito */}
+                <circle cx="100" cy="182" r="13" fill="#0A1A33" opacity="0.55" />
+                <circle cx="100" cy="182" r="10" fill="url(#botCore)" style={{ filter: "drop-shadow(0 0 7px #22E6FF)" }} />
+                <circle cx="97" cy="179" r="2.4" fill="#ffffff" opacity="0.85" />
+                {/* rim light frio na borda baixo-direita do corpo */}
+                <path d="M143 168 A 44 44 0 0 1 122 224" fill="none" stroke="#7FDFFF" strokeWidth="2.4" strokeLinecap="round" opacity="0.5" />
 
-                {/* pescoco */}
-                <rect x="101" y="106" width="18" height="14" rx="6" fill="url(#botLimb)" />
-
-                {/* antena: bob na base, bolinha brilhando */}
-                <motion.g animate={reduce ? undefined : { rotate: [-6, 6] }} transition={{ duration: 1.7, ...EASE_MIRROR }} style={{ originX: 0.5, originY: 1 }}>
-                  <rect x="108.5" y="40" width="3" height="18" rx="1.5" fill="#8aa0ff" />
-                  <motion.circle cx="110" cy="37" r="6" fill="#2ee6ff" style={{ filter: "drop-shadow(0 0 6px #2ee6ff)" }} animate={reduce ? undefined : { opacity: [0.65, 1, 0.65] }} transition={{ duration: 2.1, repeat: Infinity, ease: "easeInOut" }} />
+                {/* antena (tortinha = vida), pivo na base */}
+                <motion.g animate={reduce ? undefined : { rotate: [-6, 6] }} transition={{ duration: 1.75, ...EASE_MIRROR }} style={{ originX: 0.5, originY: 1 }}>
+                  <path d="M100 30 Q 106 18 110 9" fill="none" stroke="#7FB6F5" strokeWidth="3.4" strokeLinecap="round" />
+                  <motion.circle cx="111" cy="7" r="7" fill="url(#botCore)" style={{ filter: "drop-shadow(0 0 7px #22E6FF)" }} animate={reduce ? undefined : { opacity: [0.7, 1, 0.7] }} transition={{ duration: 2.1, repeat: Infinity, ease: "easeInOut" }} />
+                  <circle cx="108.5" cy="4.5" r="1.8" fill="#ffffff" opacity="0.9" />
                 </motion.g>
 
-                {/* cabeca */}
-                <rect x="74" y="56" width="72" height="58" rx="26" fill="url(#botBody)" />
-                <rect x="83" y="66" width="54" height="41" rx="17" fill="#0c1226" />
+                {/* cabeca (domo redondo) */}
+                <rect x="42" y="26" width="116" height="112" rx="46" fill="url(#botDome)" stroke="#16345E" strokeWidth="2" />
+                {/* sheen especular topo-esquerda da cabeca */}
+                <ellipse cx="80" cy="55" rx="26" ry="15" fill="url(#botSheen)" transform="rotate(-16 80 55)" />
+                {/* rim light frio baixo-direita */}
+                <path d="M150 74 A 58 58 0 0 1 120 132" fill="none" stroke="#7FDFFF" strokeWidth="2.6" strokeLinecap="round" opacity="0.55" />
+
+                {/* rosto: tela de vidro */}
+                <rect x="60" y="72" width="80" height="52" rx="22" fill="url(#botGlass)" stroke="#0a1428" strokeWidth="1.5" />
+                {/* glow emissivo atras das features */}
+                <ellipse cx="100" cy="98" rx="40" ry="26" fill="#2FE6FF" opacity="0.14" />
+                {/* reflexo no topo do vidro */}
+                <path d="M64 78 Q 100 70 136 78 L 136 88 Q 100 82 64 90 Z" fill="#ffffff" opacity="0.06" />
 
                 {/* sobrancelhas */}
                 <motion.g animate={{ y: expr === "surpreso" ? -4 : 0 }} transition={{ type: "spring", stiffness: 200, damping: 16 }}>
-                  <rect x="92" y="73" width="14" height="3.4" rx="1.7" fill="#8aa0ff" opacity="0.9" />
-                  <rect x="114" y="73" width="14" height="3.4" rx="1.7" fill="#8aa0ff" opacity="0.9" />
+                  <rect x="72" y="80" width="18" height="4" rx="2" fill="#8CC6FF" opacity="0.85" transform="rotate(-4 81 82)" />
+                  <rect x="110" y="80" width="18" height="4" rx="2" fill="#8CC6FF" opacity="0.85" transform="rotate(4 119 82)" />
                 </motion.g>
 
-                {/* olhos: base ciano com glow, iris seguindo o cursor, brilho */}
-                <g style={{ filter: "drop-shadow(0 0 5px rgba(46,230,255,0.9))" }}>
-                  <motion.g animate={{ scaleY: blink ? 0.12 : 1 }} transition={{ duration: 0.09, ease: "easeOut" }} style={{ originX: 0.5, originY: 0.5 }}>
-                    <circle cx="99" cy="88" r="9.5" fill="#8bf3ff" />
-                    <motion.circle cx="99" cy="88" r="4.4" fill="#12224e" style={{ x: irisX, y: irisY }} />
-                    <circle cx="96.5" cy="85.5" r="1.7" fill="#ffffff" />
+                {/* olhos: soquete + lente + iris ciano + 2 catchlights */}
+                <g style={{ filter: "drop-shadow(0 0 5px rgba(46,230,255,0.85))" }}>
+                  <motion.g animate={{ scaleY: blink ? 0.1 : 1 }} transition={{ duration: 0.1, ease: "easeOut" }} style={{ originX: 0.5, originY: 0.5 }}>
+                    <circle cx="82" cy="98" r="15" fill="#10141f" />
+                    <circle cx="82" cy="98" r="13" fill="url(#botEye)" />
+                    <motion.circle cx="82" cy="98" r="7.5" fill="url(#botIris)" style={{ x: irisX, y: irisY }} />
+                    <circle cx="78" cy="94" r="3.4" fill="#ffffff" opacity="0.95" />
+                    <circle cx="86" cy="102" r="1.7" fill="#ffffff" opacity="0.5" />
                   </motion.g>
-                  <motion.g animate={{ scaleY: blink ? 0.12 : 1 }} transition={{ duration: 0.09, ease: "easeOut" }} style={{ originX: 0.5, originY: 0.5 }}>
-                    <circle cx="121" cy="88" r="9.5" fill="#8bf3ff" />
-                    <motion.circle cx="121" cy="88" r="4.4" fill="#12224e" style={{ x: irisX, y: irisY }} />
-                    <circle cx="118.5" cy="85.5" r="1.7" fill="#ffffff" />
+                  <motion.g animate={{ scaleY: blink ? 0.1 : 1 }} transition={{ duration: 0.1, ease: "easeOut" }} style={{ originX: 0.5, originY: 0.5 }}>
+                    <circle cx="118" cy="98" r="15" fill="#10141f" />
+                    <circle cx="118" cy="98" r="13" fill="url(#botEye)" />
+                    <motion.circle cx="118" cy="98" r="7.5" fill="url(#botIris)" style={{ x: irisX, y: irisY }} />
+                    <circle cx="114" cy="94" r="3.4" fill="#ffffff" opacity="0.95" />
+                    <circle cx="122" cy="102" r="1.7" fill="#ffffff" opacity="0.5" />
                   </motion.g>
                 </g>
 
                 {/* bochechas (so quando feliz) */}
-                <motion.g animate={{ opacity: happy ? 0.55 : 0 }} transition={{ duration: 0.3 }}>
-                  <circle cx="88" cy="99" r="4.5" fill="#ff8fbf" />
-                  <circle cx="132" cy="99" r="4.5" fill="#ff8fbf" />
+                <motion.g animate={{ opacity: happy ? 0.6 : 0 }} transition={{ duration: 0.3 }}>
+                  <circle cx="58" cy="112" r="7.5" fill="#ff8fbf" />
+                  <circle cx="142" cy="112" r="7.5" fill="#ff8fbf" />
                 </motion.g>
 
                 {/* boca */}
-                <motion.path d={BOCA[expr]} animate={{ d: BOCA[expr] }} transition={{ type: "spring", stiffness: 120, damping: 18 }} fill="none" stroke="#9fd0ff" strokeWidth="4.5" strokeLinecap="round" />
+                <motion.path d={BOCA[expr]} animate={{ d: BOCA[expr] }} transition={{ type: "spring", stiffness: 120, damping: 18 }} fill="none" stroke="#8CF8FF" strokeWidth="5" strokeLinecap="round" />
               </motion.g>
             </motion.g>
           </g>
