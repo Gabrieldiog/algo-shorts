@@ -2,8 +2,10 @@
 
 import { useCallback, useEffect, useRef } from "react";
 
-// Áudio-assinatura: cada valor vira um tom (grave embaixo, agudo em cima). O
-// AudioContext só nasce num gesto do usuário (o play), respeitando o autoplay.
+// Áudio-assinatura: cada valor vira um tom (grave embaixo, agudo em cima). A
+// faixa 120-1212 Hz e a onda triangular vêm do "Sound of Sorting" (Timo
+// Bingmann), a origem dos vídeos virais: larga o bastante, sem doer no ouvido.
+// O AudioContext só nasce num gesto do usuário (o play), respeitando o autoplay.
 export function useSounds(enabled: boolean) {
   const ctxRef = useRef<AudioContext | null>(null);
 
@@ -20,11 +22,11 @@ export function useSounds(enabled: boolean) {
     (value: number, max: number, opts?: { type?: OscillatorType; dur?: number; vol?: number }) => {
       if (!enabled) return;
       const ctx = ensure();
-      const freq = 170 + (value / max) * 720;
-      const dur = opts?.dur ?? 0.09;
+      const freq = 120 + (value / max) * 1092;
+      const dur = opts?.dur ?? 0.085;
       const osc = ctx.createOscillator();
       const g = ctx.createGain();
-      osc.type = opts?.type ?? "sine";
+      osc.type = opts?.type ?? "triangle";
       osc.frequency.value = freq;
       const t = ctx.currentTime;
       g.gain.setValueAtTime(0, t);
