@@ -7,6 +7,7 @@ import { useI18n } from "@/lib/i18n";
 import { getPathAlgorithm, rosterEntry } from "@/lib/algorithms";
 import { applyPathStep, cellKey, emptyPathFrame, type GridSpec, type PathFrame } from "@/lib/pathfinding/grid";
 import { Character, type Mood } from "@/components/player/Character";
+import { ComplexityCard } from "@/components/player/Complexity";
 import { useSounds } from "@/components/player/useSounds";
 
 type SizeKey = "sm" | "md" | "lg";
@@ -338,15 +339,7 @@ export function PathViz({ slug }: { slug: string }) {
       </div>
 
       <div className="mt-8 grid gap-4 md:grid-cols-2">
-        <div className="card p-5">
-          <h2 className="mb-4 font-display text-lg font-bold">{d.player.complexity}</h2>
-          <div className="grid grid-cols-2 gap-3">
-            <BigO label={d.player.best} value={entry.complexity.best} />
-            <BigO label={d.player.avg} value={entry.complexity.avg} highlight />
-            <BigO label={d.player.worst} value={entry.complexity.worst} />
-            <BigO label={d.player.space} value={entry.complexity.space} />
-          </div>
-        </div>
+        <ComplexityCard complexity={entry.complexity} />
         <div className="flex flex-col gap-4">
           {text.how && (
             <div className="card p-5">
@@ -384,11 +377,3 @@ function PathBtn({ onClick, children }: { onClick: () => void; children: React.R
   );
 }
 
-function BigO({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
-  return (
-    <div className={`rounded-lg border p-3 ${highlight ? "border-primary/40 bg-primary/5" : "border-line/60"}`}>
-      <div className="text-[11px] uppercase tracking-wide text-muted">{label}</div>
-      <div className={`mt-0.5 font-mono text-lg font-semibold ${highlight ? "text-primary" : "text-ink"}`}>{value}</div>
-    </div>
-  );
-}

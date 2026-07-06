@@ -13,6 +13,7 @@ import { Dots } from "@/components/viz/Dots";
 import { Ring } from "@/components/viz/Ring";
 import { Controls } from "./Controls";
 import { Character, type Mood } from "./Character";
+import { ComplexityCard } from "./Complexity";
 import { useSounds } from "./useSounds";
 
 const VIZ = { bars: Bars, rainbow: Rainbow, dots: Dots, circle: Ring } as const;
@@ -266,20 +267,7 @@ export function Visualizer({ slug }: { slug: string }) {
       </div>
 
       <div className="mt-8 grid gap-4 md:grid-cols-2">
-        <div className="card p-5">
-          <h2 className="mb-4 font-display text-lg font-bold">{d.player.complexity}</h2>
-          <div className="grid grid-cols-2 gap-3">
-            <BigO label={d.player.best} value={entry.complexity.best} />
-            <BigO label={d.player.avg} value={entry.complexity.avg} highlight />
-            <BigO label={d.player.worst} value={entry.complexity.worst} />
-            <BigO label={d.player.space} value={entry.complexity.space} />
-          </div>
-          {entry.stable !== undefined && (
-            <p className="mt-4 text-sm text-muted">
-              {d.player.stability}: <span className="text-ink">{entry.stable ? d.home.stable : d.home.unstable}</span>
-            </p>
-          )}
-        </div>
+        <ComplexityCard complexity={entry.complexity} stable={entry.stable} />
 
         <div className="flex flex-col gap-4">
           {text.how && (
@@ -305,15 +293,6 @@ function Stat({ label, value }: { label: string; value: number }) {
     <span className="rounded-md bg-surface-2/70 px-2 py-1">
       <span className="text-ink">{value}</span> <span className="text-[10px] uppercase tracking-wide">{label}</span>
     </span>
-  );
-}
-
-function BigO({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
-  return (
-    <div className={`rounded-lg border p-3 ${highlight ? "border-primary/40 bg-primary/5" : "border-line/60"}`}>
-      <div className="text-[11px] uppercase tracking-wide text-muted">{label}</div>
-      <div className={`mt-0.5 font-mono text-lg font-semibold ${highlight ? "text-primary" : "text-ink"}`}>{value}</div>
-    </div>
   );
 }
 
