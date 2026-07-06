@@ -15,6 +15,7 @@ export interface AlgoText {
   tagline: string;
   curiosity?: string;
   how?: string;
+  steps?: string[];
 }
 
 /** As falas do personagem, uma função por evento (a i18n vira a Note em texto). */
@@ -83,6 +84,9 @@ export interface Dict {
     complexityIntro: string;
     inTime: string;
     inMemory: string;
+    growthTitle: string;
+    growthNote: string;
+    items: string;
     curiosity: string;
     howTitle: string;
     best: string;
