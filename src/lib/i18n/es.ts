@@ -66,6 +66,18 @@ export const es: Dict = {
     cta: "Modo carrera",
   },
   character: { intro: "Elige un algoritmo y dale play. Yo explico lo demás." },
+  path: {
+    exploring: "Explorando la cuadrícula...",
+    found: (n) => `¡Llegué! Camino de ${n} pasos.`,
+    noPath: "Sin camino: las paredes bloquearon todo.",
+    newMaze: "Nuevo laberinto",
+    clearWalls: "Limpiar paredes",
+    drawHint: "Arrastra en la cuadrícula para dibujar o borrar paredes.",
+    visited: "visitados",
+    pathLen: "camino",
+    start: "inicio",
+    end: "fin",
+  },
   algos: {
     bubble: {
       name: "Bubble Sort",
@@ -236,10 +248,30 @@ export const es: Dict = {
       how: "Solo funciona en un arreglo ordenado. Mira el elemento del medio: si es el objetivo, lo encontró; si el objetivo es mayor, descarta la mitad de abajo; si menor, la de arriba. Repite en lo que queda.",
       curiosity: "Cada paso parte el problema a la mitad, así que encuentra en unas log₂(n) comparaciones: en un millón de ítems, unos 20 pasos. Así se busca en un diccionario sin leer página por página.",
     },
-    bfs: { name: "BFS", tagline: "Explora en olas: lo cercano primero, lo lejano después." },
-    dfs: { name: "DFS", tagline: "Se hunde por un camino hasta chocar, y luego retrocede." },
-    dijkstra: { name: "Dijkstra", tagline: "El camino más corto pesando cada paso." },
-    astar: { name: "A*", tagline: "Dijkstra con olfato: apunta a la meta para llegar antes." },
+    bfs: {
+      name: "BFS",
+      tagline: "Explora en olas: lo cercano primero, lo lejano después.",
+      how: "Explora en olas: visita todos los vecinos a distancia 1, luego los de 2, y así. Como avanza nivel a nivel, el primer camino que llega al fin es el más corto.",
+      curiosity: "En una cuadrícula sin pesos, BFS encuentra el camino más corto, y es la base de cosas como los grados de separación en redes sociales.",
+    },
+    dfs: {
+      name: "DFS",
+      tagline: "Se hunde por un camino hasta chocar, y luego retrocede.",
+      how: "Se hunde por un camino hasta chocar con una pared o un callejón, y luego retrocede y prueba otro. Usa una pila en vez de una cola.",
+      curiosity: "No garantiza el camino más corto, ya que se lanza en picada, pero gasta poca memoria y es genial para explorar laberintos y detectar ciclos.",
+    },
+    dijkstra: {
+      name: "Dijkstra",
+      tagline: "El camino más corto pesando cada paso.",
+      how: "Como BFS, pero pensado para pesos: siempre expande la celda de menor costo acumulado. En una cuadrícula sin pesos, explora igual que BFS.",
+      curiosity: "Es el algoritmo de las apps de mapas y del ruteo de redes. Edsger Dijkstra lo inventó en 20 minutos, sin papel, tomando café.",
+    },
+    astar: {
+      name: "A*",
+      tagline: "Dijkstra con olfato: apunta a la meta para llegar antes.",
+      how: "Dijkstra con una corazonada: además del costo hasta aquí, suma una estimación de la distancia al fin (la heurística). Así apunta al destino en vez de explorar por todos lados.",
+      curiosity: "Es el pathfinding de los videojuegos. La heurística lo hace llegar mucho más rápido que Dijkstra, visitando muchas menos celdas.",
+    },
   },
   phrases: {
     start: (n) => `Vamos a ordenar ${n} elementos.`,

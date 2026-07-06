@@ -66,6 +66,18 @@ export const en: Dict = {
     cta: "Race mode",
   },
   character: { intro: "Pick an algorithm and hit play. I'll handle the rest." },
+  path: {
+    exploring: "Exploring the grid...",
+    found: (n) => `Reached it! Path of ${n} steps.`,
+    noPath: "No path: the walls blocked everything.",
+    newMaze: "New maze",
+    clearWalls: "Clear walls",
+    drawHint: "Drag on the grid to draw or erase walls.",
+    visited: "visited",
+    pathLen: "path",
+    start: "start",
+    end: "end",
+  },
   algos: {
     bubble: {
       name: "Bubble Sort",
@@ -236,10 +248,30 @@ export const en: Dict = {
       how: "Only works on a sorted array. It looks at the middle element: if it's the target, found; if the target is larger, it drops the bottom half; if smaller, the top. Repeat on what's left.",
       curiosity: "Each step halves the problem, so it finds in about log₂(n) comparisons: in a million items, around 20 steps. That's how you look something up in a dictionary without reading page by page.",
     },
-    bfs: { name: "BFS", tagline: "Explores in waves: everything near first, far away later." },
-    dfs: { name: "DFS", tagline: "Dives deep down a path until it hits a wall, then backtracks." },
-    dijkstra: { name: "Dijkstra", tagline: "Shortest path, weighing every single step." },
-    astar: { name: "A*", tagline: "Dijkstra with instinct: aims at the goal to get there sooner." },
+    bfs: {
+      name: "BFS",
+      tagline: "Explores in waves: everything near first, far away later.",
+      how: "Explores in waves: it visits every neighbor at distance 1, then distance 2, and so on. Because it advances level by level, the first path to reach the end is the shortest.",
+      curiosity: "On an unweighted grid, BFS finds the shortest path, and it's the backbone of things like degrees of separation in social networks.",
+    },
+    dfs: {
+      name: "DFS",
+      tagline: "Dives deep down a path until it hits a wall, then backtracks.",
+      how: "Dives deep down one path until it hits a wall or dead end, then backtracks and tries another. It uses a stack instead of a queue.",
+      curiosity: "It doesn't guarantee the shortest path, since it plunges, but it uses little memory and is great for exploring mazes and detecting cycles.",
+    },
+    dijkstra: {
+      name: "Dijkstra",
+      tagline: "Shortest path, weighing every single step.",
+      how: "Like BFS, but built for weights: it always expands the cell with the smallest accumulated cost. On an unweighted grid, it explores exactly like BFS.",
+      curiosity: "It's the algorithm behind map apps and network routing. Edsger Dijkstra came up with it in 20 minutes, with no paper, over coffee.",
+    },
+    astar: {
+      name: "A*",
+      tagline: "Dijkstra with instinct: aims at the goal to get there sooner.",
+      how: "Dijkstra with a hunch: on top of the cost so far, it adds an estimate of the distance to the end (a heuristic). So it aims at the goal instead of exploring everywhere.",
+      curiosity: "It's the pathfinding of video games. The heuristic gets it there much faster than Dijkstra, visiting far fewer cells.",
+    },
   },
   phrases: {
     start: (n) => `Let's sort ${n} elements.`,
