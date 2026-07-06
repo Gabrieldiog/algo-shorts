@@ -65,6 +65,20 @@ export const en: Dict = {
     cta: "Race mode",
   },
   character: { intro: "Pick an algorithm and hit play. I'll handle the rest." },
+  guia: {
+    name: "Bit",
+    balloons: [
+      "Hi! I'm Bit, your guide here at Algo Shorts.",
+      "We turn algorithms into those videos that go viral, except now you're in control.",
+      "Pick an algorithm, hit play, and watch the bars dance to the beat, with sound and narration.",
+      "There are 26 kinds of sorting: from classic Bubble to Quantum Bogo, which destroys the universe if it fails. I swear it's a joke.",
+      "There's a race mode to watch two compete, and four ways to visualize: bars, rainbow, dots and ring.",
+      "Ready? Hit 'See Bubble Sort' right there. I'll explain the rest along the way!",
+    ],
+    next: "Next",
+    skip: "Skip",
+    replay: "Replay",
+  },
   algos: {
     bubble: {
       name: "Bubble Sort",

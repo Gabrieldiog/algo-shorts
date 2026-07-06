@@ -101,6 +101,13 @@ export interface Dict {
     cta: string;
   };
   character: { intro: string };
+  guia: {
+    name: string;
+    balloons: string[];
+    next: string;
+    skip: string;
+    replay: string;
+  };
   algos: Record<string, AlgoText>;
   phrases: Phrases;
 }
