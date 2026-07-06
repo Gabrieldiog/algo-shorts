@@ -87,6 +87,7 @@ export interface Dict {
     growthTitle: string;
     growthNote: string;
     items: string;
+    legend: string;
     curiosity: string;
     howTitle: string;
     best: string;
@@ -96,7 +97,7 @@ export interface Dict {
     stability: string;
     target: string;
   };
-  complexityTiers: Record<"constant" | "log" | "linear" | "linearithmic" | "quadratic" | "explosive", { name: string; time: string; space: string }>;
+  complexityTiers: Record<"constant" | "log" | "linear" | "linearithmic" | "quadratic" | "explosive", { name: string; time: string; space: string; read: string }>;
   quantum: {
     title: string;
     odds: (n: string) => string;
