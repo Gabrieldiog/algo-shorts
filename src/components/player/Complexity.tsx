@@ -77,7 +77,8 @@ export function ComplexityCard({ complexity, stable }: { complexity: Complexity;
   return (
     <div className="card p-5">
       <h2 className="font-display text-lg font-bold">{d.player.complexity}</h2>
-      <p className="mb-4 mt-1 text-xs leading-relaxed text-muted">{d.player.complexityIntro}</p>
+      <p className="mt-1 text-xs leading-relaxed text-muted">{d.player.complexityIntro}</p>
+      <p className="mb-4 mt-1.5 rounded-md bg-surface-2/40 px-2.5 py-2 text-xs leading-relaxed text-muted">{d.player.legend}</p>
       <div className="grid grid-cols-2 gap-3">
         <Cell label={d.player.best} value={complexity.best} />
         <Cell label={d.player.avg} value={complexity.avg} highlight />
@@ -85,7 +86,14 @@ export function ComplexityCard({ complexity, stable }: { complexity: Complexity;
         <Cell label={d.player.space} value={complexity.space} />
       </div>
 
-      <dl className="mt-4 space-y-2 text-sm">
+      <div className="mt-4 flex items-start gap-2.5 rounded-lg border border-primary/25 bg-primary/5 p-3">
+        <span className={`mt-1 h-2.5 w-2.5 shrink-0 rounded-full ${TIER_TONE[avgTier]}`} />
+        <p className="text-sm leading-relaxed text-muted">
+          <span className="font-mono font-bold text-primary">{complexity.avg}</span> — {d.complexityTiers[avgTier].read}
+        </p>
+      </div>
+
+      <dl className="mt-3 space-y-2 text-sm">
         <Meaning term={d.player.inTime} tier={avgTier} text={d.complexityTiers[avgTier].time} />
         <Meaning term={d.player.inMemory} tier={spaceTier} text={d.complexityTiers[spaceTier].space} />
       </dl>
