@@ -1,8 +1,10 @@
 // Registry: plugar um algoritmo novo e escrever a logica e registrar aqui.
 // O roster e a vitrine da home; ready reflete o que ja roda.
 
-import type { AlgoCategory, Complexity, SortAlgorithm } from "@/lib/engine/types";
+import type { AlgoCategory, Complexity, SearchAlgorithm, SortAlgorithm } from "@/lib/engine/types";
 import { bubble } from "./bubble";
+import { linear } from "./linear";
+import { binary } from "./binary";
 import { insertion } from "./insertion";
 import { selection } from "./selection";
 import { merge } from "./merge";
@@ -67,12 +69,21 @@ const sortImpls: Record<string, SortAlgorithm> = {
   bitonic,
 };
 
+const searchImpls: Record<string, SearchAlgorithm> = {
+  linear,
+  binary,
+};
+
 export function getSortAlgorithm(slug: string): SortAlgorithm | undefined {
   return sortImpls[slug];
 }
 
+export function getSearchAlgorithm(slug: string): SearchAlgorithm | undefined {
+  return searchImpls[slug];
+}
+
 export function isReady(slug: string): boolean {
-  return slug in sortImpls;
+  return slug in sortImpls || slug in searchImpls;
 }
 
 export const roster: RosterEntry[] = [
@@ -104,8 +115,8 @@ export const roster: RosterEntry[] = [
   { slug: "introsort", category: "sort", ready: true, accent: "#f97316", stable: false, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(log n)" } },
   { slug: "bitonic", category: "sort", ready: true, accent: "#38bdf8", stable: false, complexity: { best: "O(n log²n)", avg: "O(n log²n)", worst: "O(n log²n)", space: "O(1)" } },
   // busca
-  { slug: "linear", category: "search", ready: false, accent: "#38bdf8", complexity: { best: "O(1)", avg: "O(n)", worst: "O(n)", space: "O(1)" } },
-  { slug: "binary", category: "search", ready: false, accent: "#a3e635", complexity: { best: "O(1)", avg: "O(log n)", worst: "O(log n)", space: "O(1)" } },
+  { slug: "linear", category: "search", ready: true, accent: "#38bdf8", complexity: { best: "O(1)", avg: "O(n)", worst: "O(n)", space: "O(1)" } },
+  { slug: "binary", category: "search", ready: true, accent: "#a3e635", complexity: { best: "O(1)", avg: "O(log n)", worst: "O(log n)", space: "O(1)" } },
   // pathfinding
   { slug: "bfs", category: "path", ready: false, accent: "#5b7fff", complexity: { best: "O(V+E)", avg: "O(V+E)", worst: "O(V+E)", space: "O(V)" } },
   { slug: "dfs", category: "path", ready: false, accent: "#a984ff", complexity: { best: "O(V+E)", avg: "O(V+E)", worst: "O(V+E)", space: "O(V)" } },

@@ -50,6 +50,7 @@ export const en: Dict = {
     worst: "Worst",
     space: "Space",
     stability: "Stability",
+    target: "Target",
   },
   modes: { bars: "Bars", rainbow: "Rainbow", dots: "Dots", circle: "Ring" },
   race: {
@@ -223,8 +224,18 @@ export const en: Dict = {
       how: "Builds bitonic sequences (up then down) and merges them with a mesh of comparisons that doesn't depend on the data. That's why it runs beautifully on a GPU.",
       curiosity: "The comparisons are always the same, no matter the data. That makes it ideal for parallel hardware, where thousands run at once.",
     },
-    linear: { name: "Linear Search", tagline: "Checks one by one until it's found, or the array runs out." },
-    binary: { name: "Binary Search", tagline: "Halves the range each look. Needs a sorted array." },
+    linear: {
+      name: "Linear Search",
+      tagline: "Checks one by one until it's found, or the array runs out.",
+      how: "Walks the array from start to end, comparing each element with the target, until it finds it or runs out. It doesn't need the array to be sorted.",
+      curiosity: "Simple and foolproof, but slow: worst case it checks all n elements. For small or unsorted lists, it's still the right pick.",
+    },
+    binary: {
+      name: "Binary Search",
+      tagline: "Halves the range each look. Needs a sorted array.",
+      how: "Only works on a sorted array. It looks at the middle element: if it's the target, found; if the target is larger, it drops the bottom half; if smaller, the top. Repeat on what's left.",
+      curiosity: "Each step halves the problem, so it finds in about log₂(n) comparisons: in a million items, around 20 steps. That's how you look something up in a dictionary without reading page by page.",
+    },
     bfs: { name: "BFS", tagline: "Explores in waves: everything near first, far away later." },
     dfs: { name: "DFS", tagline: "Dives deep down a path until it hits a wall, then backtracks." },
     dijkstra: { name: "Dijkstra", tagline: "Shortest path, weighing every single step." },

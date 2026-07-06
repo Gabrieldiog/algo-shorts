@@ -50,6 +50,7 @@ export const pt: Dict = {
     worst: "Pior",
     space: "Espaço",
     stability: "Estabilidade",
+    target: "Alvo",
   },
   modes: { bars: "Barras", rainbow: "Arco-íris", dots: "Pontos", circle: "Anel" },
   race: {
@@ -223,8 +224,18 @@ export const pt: Dict = {
       how: "Monta sequências bitônicas (que sobem e descem) e as mescla com uma malha de comparações que não depende dos dados. Por isso roda lindo em GPU.",
       curiosity: "As comparações são sempre as mesmas, aconteça o que acontecer nos dados. Isso a torna ideal pra hardware paralelo, onde milhares rodam ao mesmo tempo.",
     },
-    linear: { name: "Busca Linear", tagline: "Olha um por um até achar, ou até o array acabar." },
-    binary: { name: "Busca Binária", tagline: "Corta pela metade a cada olhada. Precisa estar ordenado." },
+    linear: {
+      name: "Busca Linear",
+      tagline: "Olha um por um até achar, ou até o array acabar.",
+      how: "Percorre o array do começo ao fim, comparando cada elemento com o alvo, até achar ou chegar no final. Não precisa que o array esteja ordenado.",
+      curiosity: "Simples e infalível, mas lenta: no pior caso olha todos os n elementos. Pra listas pequenas ou desordenadas, ainda é a escolha certa.",
+    },
+    binary: {
+      name: "Busca Binária",
+      tagline: "Corta pela metade a cada olhada. Precisa estar ordenado.",
+      how: "Só funciona em array ordenado. Olha o elemento do meio: se for o alvo, achou; se o alvo é maior, joga fora a metade de baixo; se menor, a de cima. Repete na metade que sobrou.",
+      curiosity: "Cada passo corta o problema pela metade, então acha em cerca de log₂(n) comparações: num milhão de itens, uns 20 passos. É assim que você procura num dicionário sem ler página por página.",
+    },
     bfs: { name: "BFS", tagline: "Explora em ondas: o perto primeiro, o longe depois." },
     dfs: { name: "DFS", tagline: "Vai fundo num caminho até bater na parede, aí volta." },
     dijkstra: { name: "Dijkstra", tagline: "O caminho mais curto pesando cada passo." },

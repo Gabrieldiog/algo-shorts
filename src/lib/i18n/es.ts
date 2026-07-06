@@ -50,6 +50,7 @@ export const es: Dict = {
     worst: "Peor",
     space: "Espacio",
     stability: "Estabilidad",
+    target: "Objetivo",
   },
   modes: { bars: "Barras", rainbow: "Arcoíris", dots: "Puntos", circle: "Anillo" },
   race: {
@@ -223,8 +224,18 @@ export const es: Dict = {
       how: "Arma secuencias bitónicas (que suben y bajan) y las mezcla con una malla de comparaciones que no depende de los datos. Por eso corre precioso en GPU.",
       curiosity: "Las comparaciones son siempre las mismas, pase lo que pase con los datos. Eso la hace ideal para hardware paralelo, donde miles corren a la vez.",
     },
-    linear: { name: "Búsqueda Lineal", tagline: "Mira uno por uno hasta encontrarlo, o hasta que se acabe." },
-    binary: { name: "Búsqueda Binaria", tagline: "Parte el rango a la mitad en cada mirada. Debe estar ordenado." },
+    linear: {
+      name: "Búsqueda Lineal",
+      tagline: "Mira uno por uno hasta encontrarlo, o hasta que se acabe.",
+      how: "Recorre el arreglo de principio a fin, comparando cada elemento con el objetivo, hasta encontrarlo o quedarse sin elementos. No necesita que esté ordenado.",
+      curiosity: "Simple e infalible, pero lenta: en el peor caso mira los n elementos. Para listas pequeñas o desordenadas, sigue siendo la opción correcta.",
+    },
+    binary: {
+      name: "Búsqueda Binaria",
+      tagline: "Parte el rango a la mitad en cada mirada. Debe estar ordenado.",
+      how: "Solo funciona en un arreglo ordenado. Mira el elemento del medio: si es el objetivo, lo encontró; si el objetivo es mayor, descarta la mitad de abajo; si menor, la de arriba. Repite en lo que queda.",
+      curiosity: "Cada paso parte el problema a la mitad, así que encuentra en unas log₂(n) comparaciones: en un millón de ítems, unos 20 pasos. Así se busca en un diccionario sin leer página por página.",
+    },
     bfs: { name: "BFS", tagline: "Explora en olas: lo cercano primero, lo lejano después." },
     dfs: { name: "DFS", tagline: "Se hunde por un camino hasta chocar, y luego retrocede." },
     dijkstra: { name: "Dijkstra", tagline: "El camino más corto pesando cada paso." },
