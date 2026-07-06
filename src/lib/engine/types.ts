@@ -28,6 +28,12 @@ export type Note =
   | { k: "shuffle" }
   | { k: "giveUp" }
   | { k: "flip"; n: number }
+  // memes
+  | { k: "eliminate"; v: number }
+  | { k: "miracle" }
+  | { k: "designed" }
+  | { k: "universe" }
+  | { k: "wake"; v: number }
   // busca
   | { k: "searchStart"; target: number }
   | { k: "look"; v: number }
@@ -46,6 +52,7 @@ export type Move =
   | { t: "cursor"; i: number; note?: Note } // ponteiro (busca, inserção)
   | { t: "range"; from: number; to: number; note?: Note } // subfaixa ativa
   | { t: "found"; i: number; note?: Note } // achou (busca)
+  | { t: "remove"; i: number; note?: Note } // eliminado (stalin sort)
   | { t: "note"; note: Note }; // só narração, sem mudança visual
 
 /** Estatísticas acumuladas ao longo da execução. */
@@ -64,6 +71,7 @@ export interface Frame {
   pivot: number | null;
   range: [number, number] | null;
   sorted: Set<number>;
+  removed: Set<number>;
   found: number | null;
   note: Note | null;
   stats: Stats;

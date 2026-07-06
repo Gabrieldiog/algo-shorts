@@ -26,6 +26,7 @@ export function Bars({ frame, max }: { frame: Frame; max: number }) {
 }
 
 function barStyle(frame: Frame, i: number, comparing: Set<number>, swapping: Set<number>) {
+  if (frame.removed.has(i)) return { background: "color-mix(in srgb, var(--color-muted) 26%, transparent)", glow: null as string | null };
   if (frame.sorted.has(i)) return solid("--color-sorted");
   if (swapping.has(i)) return solid("--color-swap");
   if (comparing.has(i)) return solid("--color-compare");

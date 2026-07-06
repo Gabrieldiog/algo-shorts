@@ -33,6 +33,11 @@ export interface Phrases {
   shuffle: () => string;
   giveUp: () => string;
   flip: (n: number) => string;
+  eliminate: (v: number) => string;
+  miracle: () => string;
+  designed: () => string;
+  universe: () => string;
+  wake: (v: number) => string;
   searchStart: (target: number) => string;
   look: (v: number) => string;
   tooLow: (v: number, target: number) => string;
@@ -132,6 +137,16 @@ export function narrate(note: Note, d: Dict): string {
       return p.giveUp();
     case "flip":
       return p.flip(note.n);
+    case "eliminate":
+      return p.eliminate(note.v);
+    case "miracle":
+      return p.miracle();
+    case "designed":
+      return p.designed();
+    case "universe":
+      return p.universe();
+    case "wake":
+      return p.wake(note.v);
     case "searchStart":
       return p.searchStart(note.target);
     case "look":
