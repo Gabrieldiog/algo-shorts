@@ -113,6 +113,7 @@ export interface Dict {
     pathLen: string;
     start: string;
     end: string;
+    sizes: { sm: string; md: string; lg: string };
   };
   algos: Record<string, AlgoText>;
   phrases: Phrases;

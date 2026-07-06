@@ -9,24 +9,41 @@ import { applyPathStep, cellKey, emptyPathFrame, type GridSpec, type PathFrame }
 import { Character, type Mood } from "@/components/player/Character";
 import { useSounds } from "@/components/player/useSounds";
 
-const ROWS = 15;
-const COLS = 29;
-const START: [number, number] = [7, 4];
-const END: [number, number] = [7, COLS - 5];
-const START_K = cellKey(START[0], START[1]);
-const END_K = cellKey(END[0], END[1]);
-const MAX_DIST = ROWS + COLS;
+type SizeKey = "sm" | "md" | "lg";
+const SIZES: Record<SizeKey, { rows: number; cols: number }> = {
+  sm: { rows: 11, cols: 21 },
+  md: { rows: 15, cols: 29 },
+  lg: { rows: 19, cols: 37 },
+};
+const SIZE_KEYS: SizeKey[] = ["sm", "md", "lg"];
+const WALL_DENSITY = 0.24;
 
-function randomWalls(): Set<string> {
-  const w = new Set<string>();
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++) {
-      if (Math.random() < 0.24) w.add(cellKey(r, c));
+interface Maze {
+  walls: Set<string>;
+  start: [number, number];
+  end: [number, number];
+}
+
+const randInt = (min: number, max: number) => min + Math.floor(Math.random() * (max - min + 1));
+
+// Novo labirinto: o inicio nasce na faixa da esquerda e o fim na direita, em
+// linhas aleatorias, entao os dois mudam de lugar mas nunca ficam perto. As
+// paredes se espalham sem cobrir inicio/fim nem sufoca-los (vizinhos livres).
+function makeMaze(rows: number, cols: number): Maze {
+  const start: [number, number] = [randInt(1, rows - 2), randInt(1, 3)];
+  const end: [number, number] = [randInt(1, rows - 2), randInt(cols - 4, cols - 2)];
+  const walls = new Set<string>();
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (Math.random() < WALL_DENSITY) walls.add(cellKey(r, c));
     }
   }
-  w.delete(START_K);
-  w.delete(END_K);
-  return w;
+  for (const [pr, pc] of [start, end]) {
+    for (const [dr, dc] of [[0, 0], [-1, 0], [1, 0], [0, -1], [0, 1]]) {
+      walls.delete(cellKey(pr + dr, pc + dc));
+    }
+  }
+  return { walls, start, end };
 }
 
 function pace(speed: number): { interval: number; steps: number } {
@@ -41,7 +58,10 @@ export function PathViz({ slug }: { slug: string }) {
   const algo = getPathAlgorithm(slug);
   const text = entry ? d.algos[slug] : undefined;
 
+  const [size, setSize] = useState<SizeKey>("md");
   const [walls, setWalls] = useState<Set<string>>(() => new Set());
+  const [start, setStart] = useState<[number, number]>([7, 4]);
+  const [end, setEnd] = useState<[number, number]>([7, 24]);
   const [ready, setReady] = useState(false);
   const [speed, setSpeed] = useState(58);
   const [soundOn, setSoundOn] = useState(true);
@@ -49,26 +69,44 @@ export function PathViz({ slug }: { slug: string }) {
   const [frame, setFrame] = useState<PathFrame>(() => emptyPathFrame());
   const [step, setStep] = useState(0);
 
+  const { rows, cols } = SIZES[size];
+  const startK = cellKey(start[0], start[1]);
+  const endK = cellKey(end[0], end[1]);
+
   const { tone, ensure } = useSounds(soundOn);
 
-  useEffect(() => {
-    setWalls(randomWalls());
-    setReady(true);
+  const loadMaze = useCallback((s: SizeKey) => {
+    const { rows: r, cols: c } = SIZES[s];
+    const m = makeMaze(r, c);
+    setWalls(m.walls);
+    setStart(m.start);
+    setEnd(m.end);
   }, []);
+
+  useEffect(() => {
+    loadMaze("md");
+    setReady(true);
+  }, [loadMaze]);
+
+  // O blip precisa do inicio e do tamanho atuais; um ref evita recriar o
+  // callback (e reiniciar o loop) a cada novo labirinto.
+  const metaRef = useRef({ start, maxDist: rows + cols });
+  metaRef.current = { start, maxDist: rows + cols };
 
   // Um blip curto por lote: exploracao soa como onda subindo (grave perto do
   // inicio, agudo longe); o caminho final desce em tom mais suave, tipo alivio.
   const blip = useCallback(
     (k: string, kind: "visit" | "path") => {
       const [r, c] = k.split(",").map(Number);
-      const dist = Math.abs(r - START[0]) + Math.abs(c - START[1]);
-      if (kind === "path") tone(dist, MAX_DIST, { type: "sine", dur: 0.1, vol: 0.06 });
-      else tone(dist, MAX_DIST, { type: "triangle", dur: 0.055, vol: 0.028 });
+      const { start: s, maxDist } = metaRef.current;
+      const dist = Math.abs(r - s[0]) + Math.abs(c - s[1]);
+      if (kind === "path") tone(dist, maxDist, { type: "sine", dur: 0.1, vol: 0.06 });
+      else tone(dist, maxDist, { type: "triangle", dur: 0.055, vol: 0.028 });
     },
     [tone],
   );
 
-  const grid: GridSpec = useMemo(() => ({ rows: ROWS, cols: COLS, walls, start: START, end: END }), [walls]);
+  const grid: GridSpec = useMemo(() => ({ rows, cols, walls, start, end }), [rows, cols, walls, start, end]);
   const steps = useMemo(() => (algo && ready ? algo.generate(grid) : []), [algo, grid, ready]);
 
   const frameRef = useRef(frame);
@@ -141,7 +179,13 @@ export function PathViz({ slug }: { slug: string }) {
   };
   const newMaze = () => {
     setPlaying(false);
-    setWalls(randomWalls());
+    loadMaze(size);
+  };
+  const changeSize = (s: SizeKey) => {
+    if (s === size) return;
+    setPlaying(false);
+    setSize(s);
+    loadMaze(s);
   };
   const clearWalls = () => {
     setPlaying(false);
@@ -152,7 +196,7 @@ export function PathViz({ slug }: { slug: string }) {
   const drawing = useRef<boolean | null>(null);
   const paint = (r: number, c: number, add: boolean) => {
     const k = cellKey(r, c);
-    if (k === START_K || k === END_K) return;
+    if (k === startK || k === endK) return;
     setWalls((prev) => {
       if (prev.has(k) === add) return prev;
       const n = new Set(prev);
@@ -163,7 +207,7 @@ export function PathViz({ slug }: { slug: string }) {
   };
   const onDown = (r: number, c: number) => {
     const k = cellKey(r, c);
-    if (k === START_K || k === END_K) return;
+    if (k === startK || k === endK) return;
     drawing.current = !walls.has(k);
     paint(r, c, drawing.current);
   };
@@ -216,17 +260,17 @@ export function PathViz({ slug }: { slug: string }) {
       </header>
 
       <div className="card p-3 sm:p-4">
-        <div className="grid w-full touch-none select-none gap-[2px]" style={{ gridTemplateColumns: `repeat(${COLS}, minmax(0, 1fr))` }}>
-          {Array.from({ length: ROWS * COLS }, (_, idx) => {
-            const r = Math.floor(idx / COLS);
-            const c = idx % COLS;
+        <div className="grid w-full touch-none select-none gap-[2px]" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
+          {Array.from({ length: rows * cols }, (_, idx) => {
+            const r = Math.floor(idx / cols);
+            const c = idx % cols;
             const k = cellKey(r, c);
             return (
               <div
                 key={k}
                 onPointerDown={() => onDown(r, c)}
                 onPointerEnter={() => onEnter(r, c)}
-                className={`aspect-square rounded-[3px] transition-colors duration-150 ${cellClass(k, frame, walls)}`}
+                className={`aspect-square rounded-[3px] transition-colors duration-150 ${cellClass(k, frame, walls, startK, endK)}`}
               />
             );
           })}
@@ -269,10 +313,28 @@ export function PathViz({ slug }: { slug: string }) {
             )}
           </button>
         </div>
-        <label className="flex items-center gap-2 text-xs font-medium text-muted">
-          <span className="uppercase tracking-wide">{d.player.speed}</span>
-          <input type="range" min={0} max={100} value={speed} onChange={(e) => setSpeed(Number(e.target.value))} className="h-1.5 w-32 cursor-pointer accent-primary sm:w-40" />
-        </label>
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+          <div className="flex items-center gap-2 text-xs font-medium text-muted">
+            <span className="uppercase tracking-wide">{d.player.size}</span>
+            <div className="flex items-center gap-0.5 rounded-lg border border-line/60 p-0.5">
+              {SIZE_KEYS.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => changeSize(s)}
+                  aria-pressed={size === s}
+                  className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-colors ${size === s ? "bg-primary/15 text-primary" : "text-muted hover:text-ink"}`}
+                >
+                  {d.path.sizes[s]}
+                </button>
+              ))}
+            </div>
+          </div>
+          <label className="flex items-center gap-2 text-xs font-medium text-muted">
+            <span className="uppercase tracking-wide">{d.player.speed}</span>
+            <input type="range" min={0} max={100} value={speed} onChange={(e) => setSpeed(Number(e.target.value))} className="h-1.5 w-32 cursor-pointer accent-primary sm:w-40" />
+          </label>
+        </div>
       </div>
 
       <div className="mt-8 grid gap-4 md:grid-cols-2">
@@ -304,9 +366,9 @@ export function PathViz({ slug }: { slug: string }) {
   );
 }
 
-function cellClass(k: string, frame: PathFrame, walls: Set<string>): string {
-  if (k === START_K) return "bg-sorted";
-  if (k === END_K) return "bg-swap";
+function cellClass(k: string, frame: PathFrame, walls: Set<string>, startK: string, endK: string): string {
+  if (k === startK) return "bg-sorted";
+  if (k === endK) return "bg-swap";
   if (walls.has(k)) return "bg-ink/75";
   if (frame.path.has(k)) return "bg-compare";
   if (frame.visited.has(k)) return "bg-primary/45";
