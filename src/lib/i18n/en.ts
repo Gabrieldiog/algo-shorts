@@ -52,6 +52,18 @@ export const en: Dict = {
     stability: "Stability",
   },
   modes: { bars: "Bars", rainbow: "Rainbow", dots: "Dots", circle: "Ring" },
+  race: {
+    title: "Race mode",
+    subtitle: "Two algorithms, the same shuffled array. Fewest steps wins.",
+    versus: "vs",
+    winner: "Winner!",
+    tie: "Tie!",
+    steps: "steps",
+    run: "Race",
+    reset: "Again",
+    shuffle: "New array",
+    cta: "Race mode",
+  },
   character: { intro: "Pick an algorithm and hit play. I'll handle the rest." },
   algos: {
     bubble: {

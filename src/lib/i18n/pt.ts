@@ -52,6 +52,18 @@ export const pt: Dict = {
     stability: "Estabilidade",
   },
   modes: { bars: "Barras", rainbow: "Arco-íris", dots: "Pontos", circle: "Anel" },
+  race: {
+    title: "Modo corrida",
+    subtitle: "Dois algoritmos, o mesmo array embaralhado. Quem ordenar em menos passos vence.",
+    versus: "vs",
+    winner: "Venceu!",
+    tie: "Empate!",
+    steps: "passos",
+    run: "Correr",
+    reset: "De novo",
+    shuffle: "Novo array",
+    cta: "Modo corrida",
+  },
   character: { intro: "Escolhe um algoritmo e dá play. Eu explico o resto." },
   algos: {
     bubble: {
