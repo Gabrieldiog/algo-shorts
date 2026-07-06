@@ -97,3 +97,12 @@ export interface SortAlgorithm {
   /** recebe o array e devolve a trilha de eventos */
   generate: (input: number[]) => Move[];
 }
+
+/** Algoritmo de busca: recebe o array (ordenado) e o alvo, devolve os eventos. */
+export interface SearchAlgorithm {
+  slug: string;
+  category: "search";
+  complexity: Complexity;
+  accent: string;
+  generate: (input: number[], target: number) => Move[];
+}

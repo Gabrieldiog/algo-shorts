@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
-import { getSortAlgorithm, rosterEntry } from "@/lib/algorithms";
+import { getSearchAlgorithm, getSortAlgorithm, rosterEntry } from "@/lib/algorithms";
 import { applyMove, buildFrame, initialFrame } from "@/lib/engine/player";
 import type { Frame, Move } from "@/lib/engine/types";
 import { Bars } from "@/components/viz/Bars";
@@ -22,12 +22,16 @@ const MODES: VizMode[] = ["bars", "rainbow", "dots", "circle"];
 export function Visualizer({ slug }: { slug: string }) {
   const { d, say } = useI18n();
   const entry = rosterEntry(slug);
-  const algo = getSortAlgorithm(slug);
+  const isSearch = entry?.category === "search";
+  const sortAlgo = getSortAlgorithm(slug);
+  const searchAlgo = getSearchAlgorithm(slug);
   const text = entry ? d.algos[slug] : undefined;
+  const ready = isSearch ? !!searchAlgo : !!sortAlgo;
 
-  const [size, setSize] = useState(24);
+  const [size, setSize] = useState(isSearch ? 20 : 24);
   const [mode, setMode] = useState<VizMode>("bars");
   const [input, setInput] = useState<number[] | null>(null);
+  const [target, setTarget] = useState<number | null>(null);
   const [speed, setSpeed] = useState(55);
   const [soundOn, setSoundOn] = useState(true);
   const [playing, setPlaying] = useState(false);
@@ -36,14 +40,33 @@ export function Visualizer({ slug }: { slug: string }) {
 
   const { tone, ensure } = useSounds(soundOn);
 
+  const regen = useCallback(
+    (n: number) => {
+      if (isSearch) {
+        const arr = sortedRandom(n);
+        setInput(arr);
+        setTarget(pickTarget(arr));
+      } else {
+        setInput(shuffled(n));
+        setTarget(null);
+      }
+    },
+    [isSearch],
+  );
+
   useEffect(() => {
-    setInput(shuffled(size));
+    regen(size);
     // só na montagem: o array nasce no cliente pra não quebrar a hidratação
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const moves = useMemo(() => (algo && input ? algo.generate(input) : []), [algo, input]);
-  const max = input && input.length ? input.length : 1;
+  const moves = useMemo(() => {
+    if (!input) return [];
+    if (isSearch) return searchAlgo && target != null ? searchAlgo.generate(input, target) : [];
+    return sortAlgo ? sortAlgo.generate(input) : [];
+  }, [input, target, isSearch, searchAlgo, sortAlgo]);
+
+  const max = input && input.length ? Math.max(...input) : 1;
 
   const frameRef = useRef(frame);
   const stepRef = useRef(step);
@@ -124,15 +147,15 @@ export function Visualizer({ slug }: { slug: string }) {
   };
   const onShuffle = () => {
     setPlaying(false);
-    setInput(shuffled(size));
+    regen(size);
   };
   const onSize = (v: number) => {
     setSize(v);
     setPlaying(false);
-    setInput(shuffled(v));
+    regen(v);
   };
 
-  if (!algo || !entry || !text) {
+  if (!ready || !entry || !text) {
     return <ComingSoon slug={slug} />;
   }
 
@@ -162,6 +185,19 @@ export function Visualizer({ slug }: { slug: string }) {
         <h1 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{text.name}</h1>
         <p className="mt-1.5 max-w-2xl text-muted">{text.tagline}</p>
       </header>
+
+      {isSearch && target != null && (
+        <div className="mb-4 flex items-center gap-2">
+          <span className="glow-primary rounded-lg bg-primary px-3.5 py-1.5 text-sm font-semibold text-white">
+            {d.player.target}: <span className="font-mono">{target}</span>
+          </span>
+          {atEnd && (
+            <span className={`rounded-lg border px-3 py-1.5 text-sm font-semibold ${frame.found != null ? "border-sorted/40 bg-sorted/10 text-sorted" : "border-erro/40 bg-erro/10 text-erro"}`}>
+              {frame.found != null ? `#${frame.found}` : "✕"}
+            </span>
+          )}
+        </div>
+      )}
 
       <div className="mb-2 flex flex-wrap items-center justify-end gap-1">
         {MODES.map((m) => (
@@ -199,7 +235,7 @@ export function Visualizer({ slug }: { slug: string }) {
         <Character text={line} mood={mood} />
         <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-muted">
           <Stat label={d.player.comparisons} value={frame.stats.comparisons} />
-          <Stat label={d.player.swaps} value={frame.stats.swaps} />
+          {!isSearch && <Stat label={d.player.swaps} value={frame.stats.swaps} />}
           {frame.stats.writes > 0 && <Stat label={d.player.writes} value={frame.stats.writes} />}
         </div>
       </div>
@@ -307,6 +343,26 @@ function shuffled(n: number): number[] {
     a[j] = t;
   }
   return a;
+}
+
+// n valores distintos aleatórios, ordenados: a "escada" onde a busca acontece.
+function sortedRandom(n: number): number[] {
+  const set = new Set<number>();
+  const range = Math.max(n * 3, 20);
+  while (set.size < n) set.add(1 + Math.floor(Math.random() * range));
+  return [...set].sort((a, b) => a - b);
+}
+
+// escolhe o alvo: 65% um valor que existe, 35% um ausente (pra ver o "não achou").
+function pickTarget(sorted: number[]): number {
+  if (sorted.length === 0) return 0;
+  if (Math.random() < 0.65) return sorted[Math.floor(Math.random() * sorted.length)];
+  const max = sorted[sorted.length - 1];
+  const present = new Set(sorted);
+  let t = 1 + Math.floor(Math.random() * (max + 4));
+  let guard = 0;
+  while (present.has(t) && guard++ < 25) t = 1 + Math.floor(Math.random() * (max + 4));
+  return t;
 }
 
 function pace(speed: number): { interval: number; steps: number } {

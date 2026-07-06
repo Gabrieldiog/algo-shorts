@@ -86,6 +86,7 @@ export interface Dict {
     worst: string;
     space: string;
     stability: string;
+    target: string;
   };
   modes: { bars: string; rainbow: string; dots: string; circle: string };
   race: {

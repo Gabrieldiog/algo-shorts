@@ -8,6 +8,7 @@ export function Bars({ frame, max }: { frame: Frame; max: number }) {
     <div className="flex h-full w-full items-end justify-center gap-[2px]">
       {frame.array.map((v, i) => {
         const { background, glow } = barStyle(frame, i, comparing, swapping);
+        const outRange = frame.range ? (i < frame.range[0] || i > frame.range[1]) && !frame.sorted.has(i) && frame.found !== i : false;
         return (
           <div
             key={i}
@@ -15,8 +16,9 @@ export function Bars({ frame, max }: { frame: Frame; max: number }) {
             style={{
               height: `${(v / max) * 100}%`,
               background,
+              opacity: outRange ? 0.26 : 1,
               boxShadow: glow ? `0 0 14px -2px ${glow}` : undefined,
-              transition: "height 90ms linear, background 90ms linear, box-shadow 90ms linear",
+              transition: "height 90ms linear, background 90ms linear, box-shadow 90ms linear, opacity 90ms linear",
             }}
           />
         );
