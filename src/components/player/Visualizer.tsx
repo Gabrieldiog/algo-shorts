@@ -16,6 +16,7 @@ import { Character, type Mood } from "./Character";
 import { ComplexityCard } from "./Complexity";
 import { HowCard } from "./HowCard";
 import { QuantumOdds } from "./QuantumOdds";
+import { SpeechHistory, type Line } from "./SpeechHistory";
 import { MemeBadge } from "@/components/ui/MemeBadge";
 import { useSounds } from "./useSounds";
 
@@ -71,6 +72,24 @@ export function Visualizer({ slug }: { slug: string }) {
   }, [input, target, isSearch, searchAlgo, sortAlgo]);
 
   const max = input && input.length ? Math.max(...input) : 1;
+
+  // Transcricao das falas ate o passo atual: uma linha por narracao nova
+  // (pula repetidas seguidas). Deriva dos moves, entao acompanha o scrub tambem.
+  const history = useMemo<Line[]>(() => {
+    const out: Line[] = [];
+    let prev = "";
+    const upto = Math.min(step, moves.length);
+    for (let i = 0; i < upto; i++) {
+      const note = moves[i].note;
+      if (!note) continue;
+      const text = say(note);
+      if (text !== prev) {
+        out.push({ step: i + 1, text });
+        prev = text;
+      }
+    }
+    return out;
+  }, [moves, step, say]);
 
   const frameRef = useRef(frame);
   const stepRef = useRef(step);
@@ -245,6 +264,10 @@ export function Visualizer({ slug }: { slug: string }) {
           {!isSearch && <Stat label={d.player.swaps} value={frame.stats.swaps} />}
           {frame.stats.writes > 0 && <Stat label={d.player.writes} value={frame.stats.writes} />}
         </div>
+      </div>
+
+      <div className="mt-3">
+        <SpeechHistory lines={history} />
       </div>
 
       <div className="mt-4">

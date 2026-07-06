@@ -51,6 +51,8 @@ export const pt: Dict = {
     growthNote: "Quantas operações, mais ou menos, conforme a lista cresce. É o O(...) virando número.",
     items: "itens",
     legend: "Como ler: n é o tamanho da lista (quantos itens); O(...) é, mais ou menos, quantos passos ele dá.",
+    history: "Histórico das falas",
+    historyEmpty: "Dá play que eu vou narrando cada passo aqui.",
     curiosity: "Curiosidade",
     howTitle: "Como funciona",
     best: "Melhor",

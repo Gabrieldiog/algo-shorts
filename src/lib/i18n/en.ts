@@ -51,6 +51,8 @@ export const en: Dict = {
     growthNote: "Roughly how many operations as the list grows. This is the O(...) turned into a number.",
     items: "items",
     legend: "How to read it: n is the list size (how many items); O(...) is roughly how many steps it takes.",
+    history: "Narration log",
+    historyEmpty: "Hit play and I'll narrate every step right here.",
     curiosity: "Fun fact",
     howTitle: "How it works",
     best: "Best",
