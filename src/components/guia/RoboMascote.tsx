@@ -8,9 +8,9 @@ export type Expr = "feliz" | "neutro" | "surpreso";
 // Boca por morph nativo do `d`: os tres paths tem a MESMA estrutura (M + um C),
 // entao o Motion so interpola os numeros.
 const BOCA: Record<Expr, string> = {
-  neutro: "M89 112 C 93 114, 107 114, 111 112",
-  feliz: "M86 108 C 93 123, 107 123, 114 108",
-  surpreso: "M91 111 C 94 121, 106 121, 109 111",
+  neutro: "M92 114 C 95 116, 105 116, 108 114",
+  feliz: "M91 112 C 95 121, 105 121, 109 112",
+  surpreso: "M94 113 C 96 120, 104 120, 106 113",
 };
 
 const EASE_MIRROR = { repeat: Infinity, repeatType: "mirror", ease: "easeInOut" } as const;
@@ -209,38 +209,38 @@ export function RoboMascote({ expr = "feliz", waving = false, onPoke }: { expr?:
                 {/* rosto: tela de vidro */}
                 <rect x="60" y="72" width="80" height="52" rx="22" fill="url(#botGlass)" stroke="#0a1428" strokeWidth="1.5" />
                 {/* glow emissivo atras das features */}
-                <ellipse cx="100" cy="98" rx="40" ry="26" fill="#2FE6FF" opacity="0.14" />
+                <ellipse cx="100" cy="100" rx="40" ry="27" fill="#2FE6FF" opacity="0.14" />
                 {/* reflexo no topo do vidro */}
                 <path d="M64 78 Q 100 70 136 78 L 136 88 Q 100 82 64 90 Z" fill="#ffffff" opacity="0.06" />
 
                 {/* sobrancelhas */}
                 <motion.g animate={{ y: expr === "surpreso" ? -4 : 0 }} transition={{ type: "spring", stiffness: 200, damping: 16 }}>
-                  <rect x="72" y="80" width="18" height="4" rx="2" fill="#8CC6FF" opacity="0.85" transform="rotate(-4 81 82)" />
-                  <rect x="110" y="80" width="18" height="4" rx="2" fill="#8CC6FF" opacity="0.85" transform="rotate(4 119 82)" />
+                  <rect x="72" y="74" width="18" height="4" rx="2" fill="#8CC6FF" opacity="0.85" transform="rotate(-4 81 76)" />
+                  <rect x="110" y="74" width="18" height="4" rx="2" fill="#8CC6FF" opacity="0.85" transform="rotate(4 119 76)" />
                 </motion.g>
 
                 {/* olhos: soquete + lente + iris ciano + 2 catchlights */}
                 <g style={{ filter: "drop-shadow(0 0 5px rgba(46,230,255,0.85))" }}>
                   <motion.g animate={{ scaleY: blink ? 0.1 : 1 }} transition={{ duration: 0.1, ease: "easeOut" }} style={{ originX: 0.5, originY: 0.5 }}>
-                    <circle cx="82" cy="98" r="15" fill="#10141f" />
-                    <circle cx="82" cy="98" r="13" fill="url(#botEye)" />
-                    <motion.circle cx="82" cy="98" r="7.5" fill="url(#botIris)" style={{ x: irisX, y: irisY }} />
-                    <circle cx="78" cy="94" r="3.4" fill="#ffffff" opacity="0.95" />
-                    <circle cx="86" cy="102" r="1.7" fill="#ffffff" opacity="0.5" />
+                    <circle cx="82" cy="92" r="15" fill="#10141f" />
+                    <circle cx="82" cy="92" r="13" fill="url(#botEye)" />
+                    <motion.circle cx="82" cy="92" r="7.5" fill="url(#botIris)" style={{ x: irisX, y: irisY }} />
+                    <circle cx="78" cy="88" r="3.4" fill="#ffffff" opacity="0.95" />
+                    <circle cx="86" cy="96" r="1.7" fill="#ffffff" opacity="0.5" />
                   </motion.g>
                   <motion.g animate={{ scaleY: blink ? 0.1 : 1 }} transition={{ duration: 0.1, ease: "easeOut" }} style={{ originX: 0.5, originY: 0.5 }}>
-                    <circle cx="118" cy="98" r="15" fill="#10141f" />
-                    <circle cx="118" cy="98" r="13" fill="url(#botEye)" />
-                    <motion.circle cx="118" cy="98" r="7.5" fill="url(#botIris)" style={{ x: irisX, y: irisY }} />
-                    <circle cx="114" cy="94" r="3.4" fill="#ffffff" opacity="0.95" />
-                    <circle cx="122" cy="102" r="1.7" fill="#ffffff" opacity="0.5" />
+                    <circle cx="118" cy="92" r="15" fill="#10141f" />
+                    <circle cx="118" cy="92" r="13" fill="url(#botEye)" />
+                    <motion.circle cx="118" cy="92" r="7.5" fill="url(#botIris)" style={{ x: irisX, y: irisY }} />
+                    <circle cx="114" cy="88" r="3.4" fill="#ffffff" opacity="0.95" />
+                    <circle cx="122" cy="96" r="1.7" fill="#ffffff" opacity="0.5" />
                   </motion.g>
                 </g>
 
                 {/* bochechas (so quando feliz) */}
                 <motion.g animate={{ opacity: happy ? 0.6 : 0 }} transition={{ duration: 0.3 }}>
-                  <circle cx="58" cy="112" r="7.5" fill="#ff8fbf" />
-                  <circle cx="142" cy="112" r="7.5" fill="#ff8fbf" />
+                  <circle cx="58" cy="104" r="7.5" fill="#ff8fbf" />
+                  <circle cx="142" cy="104" r="7.5" fill="#ff8fbf" />
                 </motion.g>
 
                 {/* boca */}
