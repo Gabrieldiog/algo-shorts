@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { CATEGORIES, rosterByCategory, type RosterEntry } from "@/lib/algorithms";
+import { MemeBadge } from "@/components/ui/MemeBadge";
 
 export default function Home() {
   const { d } = useI18n();
@@ -111,10 +112,14 @@ function AlgoCard({ entry, index }: { entry: RosterEntry; index: number }) {
       </div>
       <div className="flex items-center justify-between gap-2">
         <h3 className="font-display text-lg font-bold tracking-tight">{text.name}</h3>
-        {!entry.ready && (
-          <span className="shrink-0 rounded-full border border-line px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted">
-            {d.home.soon}
-          </span>
+        {entry.meme ? (
+          <MemeBadge />
+        ) : (
+          !entry.ready && (
+            <span className="shrink-0 rounded-full border border-line px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted">
+              {d.home.soon}
+            </span>
+          )
         )}
       </div>
       <p className="mt-1.5 text-sm text-muted">{text.tagline}</p>

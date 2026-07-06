@@ -40,6 +40,7 @@ export interface RosterEntry {
   accent: string;
   complexity: Complexity;
   stable?: boolean;
+  meme?: boolean;
 }
 
 const sortImpls: Record<string, SortAlgorithm> = {
@@ -118,12 +119,12 @@ export const roster: RosterEntry[] = [
   { slug: "bucket", category: "sort", ready: true, accent: "#fbbf24", stable: true, complexity: { best: "O(n+k)", avg: "O(n+k)", worst: "O(n²)", space: "O(n+k)" } },
   { slug: "pigeonhole", category: "sort", ready: true, accent: "#f0abfc", stable: true, complexity: { best: "O(n+k)", avg: "O(n+k)", worst: "O(n+k)", space: "O(k)" } },
   { slug: "pancake", category: "sort", ready: true, accent: "#fb923c", stable: false, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
-  { slug: "bogo", category: "sort", ready: true, accent: "#ff6b6b", stable: false, complexity: { best: "O(n)", avg: "O(n·n!)", worst: "∞", space: "O(1)" } },
-  { slug: "stalin", category: "sort", ready: true, accent: "#ef4444", stable: false, complexity: { best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" } },
-  { slug: "sleep", category: "sort", ready: true, accent: "#818cf8", stable: false, complexity: { best: "O(n)", avg: "O(n+k)", worst: "O(n+k)", space: "O(n)" } },
-  { slug: "quantumbogo", category: "sort", ready: true, accent: "#22d3ee", stable: false, complexity: { best: "O(n)", avg: "O(1)", worst: "O(1)", space: "O(1)" } },
-  { slug: "miracle", category: "sort", ready: true, accent: "#e879f9", stable: true, complexity: { best: "O(n)", avg: "∞", worst: "∞", space: "O(1)" } },
-  { slug: "intelligentdesign", category: "sort", ready: true, accent: "#c4b5fd", stable: true, complexity: { best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" } },
+  { slug: "bogo", category: "sort", ready: true, accent: "#ff6b6b", stable: false, meme: true, complexity: { best: "O(n)", avg: "O(n·n!)", worst: "∞", space: "O(1)" } },
+  { slug: "stalin", category: "sort", ready: true, accent: "#ef4444", stable: false, meme: true, complexity: { best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" } },
+  { slug: "sleep", category: "sort", ready: true, accent: "#818cf8", stable: false, meme: true, complexity: { best: "O(n)", avg: "O(n+k)", worst: "O(n+k)", space: "O(n)" } },
+  { slug: "quantumbogo", category: "sort", ready: true, accent: "#22d3ee", stable: false, meme: true, complexity: { best: "O(n)", avg: "O(1)", worst: "O(1)", space: "O(1)" } },
+  { slug: "miracle", category: "sort", ready: true, accent: "#e879f9", stable: true, meme: true, complexity: { best: "O(n)", avg: "∞", worst: "∞", space: "O(1)" } },
+  { slug: "intelligentdesign", category: "sort", ready: true, accent: "#c4b5fd", stable: true, meme: true, complexity: { best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" } },
   { slug: "timsort", category: "sort", ready: true, accent: "#2dd4bf", stable: true, complexity: { best: "O(n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(n)" } },
   { slug: "introsort", category: "sort", ready: true, accent: "#f97316", stable: false, complexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(log n)" } },
   { slug: "bitonic", category: "sort", ready: true, accent: "#38bdf8", stable: false, complexity: { best: "O(n log²n)", avg: "O(n log²n)", worst: "O(n log²n)", space: "O(1)" } },

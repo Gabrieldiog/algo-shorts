@@ -14,6 +14,7 @@ import { Ring } from "@/components/viz/Ring";
 import { Controls } from "./Controls";
 import { Character, type Mood } from "./Character";
 import { ComplexityCard } from "./Complexity";
+import { MemeBadge } from "@/components/ui/MemeBadge";
 import { useSounds } from "./useSounds";
 
 const VIZ = { bars: Bars, rainbow: Rainbow, dots: Dots, circle: Ring } as const;
@@ -183,7 +184,10 @@ export function Visualizer({ slug }: { slug: string }) {
       </div>
 
       <header className="mb-5">
-        <h1 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{text.name}</h1>
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{text.name}</h1>
+          {entry.meme && <MemeBadge className="text-xs" />}
+        </div>
         <p className="mt-1.5 max-w-2xl text-muted">{text.tagline}</p>
       </header>
 

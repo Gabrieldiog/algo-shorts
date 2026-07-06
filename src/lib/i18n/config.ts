@@ -57,6 +57,7 @@ export interface Dict {
     startCta: string;
     watch: string;
     soon: string;
+    meme: string;
     stable: string;
     unstable: string;
     footer: string;

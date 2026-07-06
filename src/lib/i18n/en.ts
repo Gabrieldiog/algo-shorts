@@ -17,6 +17,7 @@ export const en: Dict = {
     startCta: "See Bubble Sort",
     watch: "Watch",
     soon: "soon",
+    meme: "meme",
     stable: "stable",
     unstable: "unstable",
     footer: "Portfolio project.",
