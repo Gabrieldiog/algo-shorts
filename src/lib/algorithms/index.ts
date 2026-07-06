@@ -20,6 +20,11 @@ import { bucket } from "./bucket";
 import { pigeonhole } from "./pigeonhole";
 import { pancake } from "./pancake";
 import { bogo } from "./bogo";
+import { stalin } from "./stalin";
+import { miracle } from "./miracle";
+import { intelligentdesign } from "./intelligentdesign";
+import { quantumbogo } from "./quantumbogo";
+import { sleep } from "./sleep";
 
 export interface RosterEntry {
   slug: string;
@@ -49,6 +54,11 @@ const sortImpls: Record<string, SortAlgorithm> = {
   pigeonhole,
   pancake,
   bogo,
+  stalin,
+  miracle,
+  intelligentdesign,
+  quantumbogo,
+  sleep,
 };
 
 export function getSortAlgorithm(slug: string): SortAlgorithm | undefined {
@@ -79,6 +89,11 @@ export const roster: RosterEntry[] = [
   { slug: "pigeonhole", category: "sort", ready: true, accent: "#f0abfc", stable: true, complexity: { best: "O(n+k)", avg: "O(n+k)", worst: "O(n+k)", space: "O(k)" } },
   { slug: "pancake", category: "sort", ready: true, accent: "#fb923c", stable: false, complexity: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)" } },
   { slug: "bogo", category: "sort", ready: true, accent: "#ff6b6b", stable: false, complexity: { best: "O(n)", avg: "O(n·n!)", worst: "∞", space: "O(1)" } },
+  { slug: "stalin", category: "sort", ready: true, accent: "#ef4444", stable: false, complexity: { best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" } },
+  { slug: "sleep", category: "sort", ready: true, accent: "#818cf8", stable: false, complexity: { best: "O(n)", avg: "O(n+k)", worst: "O(n+k)", space: "O(n)" } },
+  { slug: "quantumbogo", category: "sort", ready: true, accent: "#22d3ee", stable: false, complexity: { best: "O(n)", avg: "O(1)", worst: "O(1)", space: "O(1)" } },
+  { slug: "miracle", category: "sort", ready: true, accent: "#e879f9", stable: true, complexity: { best: "O(n)", avg: "∞", worst: "∞", space: "O(1)" } },
+  { slug: "intelligentdesign", category: "sort", ready: true, accent: "#c4b5fd", stable: true, complexity: { best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" } },
   // busca
   { slug: "linear", category: "search", ready: false, accent: "#38bdf8", complexity: { best: "O(1)", avg: "O(n)", worst: "O(n)", space: "O(1)" } },
   { slug: "binary", category: "search", ready: false, accent: "#a3e635", complexity: { best: "O(1)", avg: "O(log n)", worst: "O(log n)", space: "O(1)" } },

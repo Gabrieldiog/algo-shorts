@@ -8,6 +8,7 @@ export function markColor(
   comparing: Set<number>,
   swapping: Set<number>,
 ): { color: string; active: boolean } {
+  if (frame.removed.has(i)) return { color: "color-mix(in srgb, var(--color-muted) 30%, transparent)", active: false };
   if (swapping.has(i)) return { color: "var(--color-swap)", active: true };
   if (comparing.has(i)) return { color: "var(--color-compare)", active: true };
   if (frame.sorted.has(i)) return { color: "var(--color-sorted)", active: false };

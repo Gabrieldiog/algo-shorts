@@ -15,6 +15,7 @@ export function initialFrame(array: number[]): Frame {
     pivot: null,
     range: null,
     sorted: new Set(),
+    removed: new Set(),
     found: null,
     note: null,
     stats: { comparisons: 0, swaps: 0, writes: 0 },
@@ -32,6 +33,7 @@ export function applyMove(prev: Frame, move: Move): Frame {
     pivot: prev.pivot,
     range: prev.range,
     sorted: prev.sorted,
+    removed: prev.removed,
     found: prev.found,
     note: prev.note,
     stats: prev.stats,
@@ -70,6 +72,10 @@ export function applyMove(prev: Frame, move: Move): Frame {
       break;
     case "found":
       next.found = move.i;
+      break;
+    case "remove":
+      next.removed = new Set(prev.removed);
+      next.removed.add(move.i);
       break;
     case "note":
       break;
