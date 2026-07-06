@@ -64,6 +64,17 @@ export const en: Dict = {
     quadratic: { name: "quadratic", time: "Heavy: doubling the list multiplies the work by four.", space: "Takes room proportional to the list squared." },
     explosive: { name: "explosive", time: "Explodes: even a few dozen items becomes hopeless.", space: "Memory cost grows out of control." },
   },
+  quantum: {
+    title: "Chance the universe survives",
+    odds: (n) => `1 in ${n} arrangements`,
+    note: "Every out-of-place element has to land right in the shuffle. The ones already in position, the quantum leaves alone — so the odds climb as the list gets closer to sorted.",
+    safe: "Already sorted: the universe is safe.",
+    flavor: {
+      hope: "Long shot, but you can root for it.",
+      lottery: "Like winning the lottery — more than once.",
+      cosmic: "Easier to point at the sky and hit one specific atom.",
+    },
+  },
   modes: { bars: "Bars", rainbow: "Rainbow", dots: "Dots", circle: "Ring" },
   race: {
     title: "Race mode",
