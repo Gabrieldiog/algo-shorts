@@ -15,6 +15,12 @@ export function Header() {
           <span className="font-display text-lg font-bold tracking-tight">{d.nav.brand}</span>
         </Link>
         <div className="flex items-center gap-2">
+          <Link
+            href="/corrida"
+            className="mr-1 hidden rounded-lg px-3 py-1.5 text-sm font-semibold text-muted transition-colors hover:text-primary sm:inline-block"
+          >
+            {d.race.cta}
+          </Link>
           <LangToggle />
           <ThemeToggle />
         </div>

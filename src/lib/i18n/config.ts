@@ -83,6 +83,18 @@ export interface Dict {
     stability: string;
   };
   modes: { bars: string; rainbow: string; dots: string; circle: string };
+  race: {
+    title: string;
+    subtitle: string;
+    versus: string;
+    winner: string;
+    tie: string;
+    steps: string;
+    run: string;
+    reset: string;
+    shuffle: string;
+    cta: string;
+  };
   character: { intro: string };
   algos: Record<string, AlgoText>;
   phrases: Phrases;

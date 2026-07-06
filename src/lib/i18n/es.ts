@@ -52,6 +52,18 @@ export const es: Dict = {
     stability: "Estabilidad",
   },
   modes: { bars: "Barras", rainbow: "Arcoíris", dots: "Puntos", circle: "Anillo" },
+  race: {
+    title: "Modo carrera",
+    subtitle: "Dos algoritmos, el mismo arreglo mezclado. Gana quien ordena en menos pasos.",
+    versus: "vs",
+    winner: "¡Ganó!",
+    tie: "¡Empate!",
+    steps: "pasos",
+    run: "Correr",
+    reset: "Otra vez",
+    shuffle: "Nuevo arreglo",
+    cta: "Modo carrera",
+  },
   character: { intro: "Elige un algoritmo y dale play. Yo explico lo demás." },
   algos: {
     bubble: {
