@@ -77,6 +77,7 @@ export const en: Dict = {
     pathLen: "path",
     start: "start",
     end: "end",
+    sizes: { sm: "Small", md: "Medium", lg: "Large" },
   },
   algos: {
     bubble: {
