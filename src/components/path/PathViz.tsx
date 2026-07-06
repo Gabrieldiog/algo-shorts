@@ -7,6 +7,7 @@ import { useI18n } from "@/lib/i18n";
 import { getPathAlgorithm, rosterEntry } from "@/lib/algorithms";
 import { applyPathStep, cellKey, emptyPathFrame, type GridSpec, type PathFrame } from "@/lib/pathfinding/grid";
 import { Character, type Mood } from "@/components/player/Character";
+import { useSounds } from "@/components/player/useSounds";
 
 const ROWS = 15;
 const COLS = 29;
@@ -14,6 +15,7 @@ const START: [number, number] = [7, 4];
 const END: [number, number] = [7, COLS - 5];
 const START_K = cellKey(START[0], START[1]);
 const END_K = cellKey(END[0], END[1]);
+const MAX_DIST = ROWS + COLS;
 
 function randomWalls(): Set<string> {
   const w = new Set<string>();
@@ -42,14 +44,29 @@ export function PathViz({ slug }: { slug: string }) {
   const [walls, setWalls] = useState<Set<string>>(() => new Set());
   const [ready, setReady] = useState(false);
   const [speed, setSpeed] = useState(58);
+  const [soundOn, setSoundOn] = useState(true);
   const [playing, setPlaying] = useState(false);
   const [frame, setFrame] = useState<PathFrame>(() => emptyPathFrame());
   const [step, setStep] = useState(0);
+
+  const { tone, ensure } = useSounds(soundOn);
 
   useEffect(() => {
     setWalls(randomWalls());
     setReady(true);
   }, []);
+
+  // Um blip curto por lote: exploracao soa como onda subindo (grave perto do
+  // inicio, agudo longe); o caminho final desce em tom mais suave, tipo alivio.
+  const blip = useCallback(
+    (k: string, kind: "visit" | "path") => {
+      const [r, c] = k.split(",").map(Number);
+      const dist = Math.abs(r - START[0]) + Math.abs(c - START[1]);
+      if (kind === "path") tone(dist, MAX_DIST, { type: "sine", dur: 0.1, vol: 0.06 });
+      else tone(dist, MAX_DIST, { type: "triangle", dur: 0.055, vol: 0.028 });
+    },
+    [tone],
+  );
 
   const grid: GridSpec = useMemo(() => ({ rows: ROWS, cols: COLS, walls, start: START, end: END }), [walls]);
   const steps = useMemo(() => (algo && ready ? algo.generate(grid) : []), [algo, grid, ready]);
@@ -78,16 +95,23 @@ export function PathViz({ slug }: { slug: string }) {
     }
     let f = frameRef.current;
     const end = Math.min(st.length, i + count);
+    let lastVisit: string | null = null;
+    let lastPath: string | null = null;
     while (i < end) {
-      f = applyPathStep(f, st[i]);
+      const s = st[i];
+      if (s.t === "visit") lastVisit = s.k;
+      else if (s.t === "path") lastPath = s.k;
+      f = applyPathStep(f, s);
       i++;
     }
     frameRef.current = f;
     stepRef.current = i;
     setFrame(f);
     setStep(i);
+    if (lastPath) blip(lastPath, "path");
+    else if (lastVisit) blip(lastVisit, "visit");
     if (i >= st.length) setPlaying(false);
-  }, []);
+  }, [blip]);
 
   useEffect(() => {
     if (!playing) return;
@@ -111,6 +135,7 @@ export function PathViz({ slug }: { slug: string }) {
       setPlaying(false);
       return;
     }
+    if (soundOn) ensure();
     if (stepRef.current >= stepsRef.current.length) reset();
     setPlaying(true);
   };
@@ -229,6 +254,20 @@ export function PathViz({ slug }: { slug: string }) {
           <PathBtn onClick={reset}>{d.player.reset}</PathBtn>
           <PathBtn onClick={newMaze}>{d.path.newMaze}</PathBtn>
           <PathBtn onClick={clearWalls}>{d.path.clearWalls}</PathBtn>
+          <button
+            type="button"
+            onClick={() => setSoundOn((s) => !s)}
+            aria-pressed={soundOn}
+            aria-label={d.player.sound}
+            title={d.player.sound}
+            className={`grid h-9 w-9 place-items-center rounded-lg border transition-colors ${soundOn ? "border-primary/50 text-primary" : "border-line/70 text-muted hover:text-ink"}`}
+          >
+            {soundOn ? (
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z" /><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14" /></svg>
+            ) : (
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z" /><path d="m23 9-6 6M17 9l6 6" /></svg>
+            )}
+          </button>
         </div>
         <label className="flex items-center gap-2 text-xs font-medium text-muted">
           <span className="uppercase tracking-wide">{d.player.speed}</span>
