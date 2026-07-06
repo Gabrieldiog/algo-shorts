@@ -121,6 +121,13 @@ export interface Dict {
     cta: string;
   };
   character: { intro: string };
+  guia: {
+    name: string;
+    messages: string[];
+    next: string;
+    replay: string;
+    hint: string;
+  };
   path: {
     exploring: string;
     found: (n: number) => string;

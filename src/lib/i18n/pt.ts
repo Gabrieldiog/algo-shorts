@@ -95,6 +95,19 @@ export const pt: Dict = {
     cta: "Modo corrida",
   },
   character: { intro: "Escolhe um algoritmo e dá play. Eu explico o resto." },
+  guia: {
+    name: "Bit",
+    messages: [
+      "Oi! Eu sou o Bit, seu guia aqui no Algo Shorts.",
+      "Cada card ali embaixo é um algoritmo. Clica num e ele ganha vida: barras que dançam, som e narração.",
+      "Dá play e acompanha passo a passo. Eu narro o que tá rolando e você controla a velocidade.",
+      "Tem os campeões tipo quick e merge, os de busca, os de caminho e até os de meme que fazem bagunça.",
+      "Bora? Começa pelo Bubble Sort ali em cima. E pode me cutucar quando quiser.",
+    ],
+    next: "Próximo",
+    replay: "De novo",
+    hint: "psiu, pode me cutucar",
+  },
   path: {
     exploring: "Explorando a grade...",
     found: (n) => `Cheguei! Caminho de ${n} passos.`,

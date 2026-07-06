@@ -95,6 +95,19 @@ export const en: Dict = {
     cta: "Race mode",
   },
   character: { intro: "Pick an algorithm and hit play. I'll handle the rest." },
+  guia: {
+    name: "Bit",
+    messages: [
+      "Hi! I'm Bit, your guide here at Algo Shorts.",
+      "Each card below is an algorithm. Click one and it comes alive: dancing bars, sound and narration.",
+      "Hit play and follow along step by step. I narrate what's happening and you control the speed.",
+      "There are the champions like quick and merge, the searches, the pathfinders, and even the meme ones that make a mess.",
+      "Ready? Start with Bubble Sort up top. And feel free to poke me anytime.",
+    ],
+    next: "Next",
+    replay: "Again",
+    hint: "psst, you can poke me",
+  },
   path: {
     exploring: "Exploring the grid...",
     found: (n) => `Reached it! Path of ${n} steps.`,

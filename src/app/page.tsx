@@ -5,59 +5,71 @@ import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { CATEGORIES, rosterByCategory, type RosterEntry } from "@/lib/algorithms";
 import { MemeBadge } from "@/components/ui/MemeBadge";
+import { MascoteGuia } from "@/components/guia/MascoteGuia";
 
 export default function Home() {
   const { d } = useI18n();
 
   return (
     <div className="mx-auto max-w-6xl overflow-x-hidden px-4 pb-24 sm:px-6">
-      <section className="relative py-16 sm:py-24">
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary"
-        >
-          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          {d.home.kicker}
-        </motion.p>
+      <section className="relative grid items-center gap-10 py-16 sm:py-24 lg:grid-cols-[1fr_minmax(0,380px)]">
+        <div>
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+            {d.home.kicker}
+          </motion.p>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05 }}
-          className="font-display text-[1.9rem] font-extrabold leading-[1] tracking-tight break-words sm:text-6xl lg:text-7xl"
-        >
-          {d.home.titleA}
-          <br />
-          <span className="text-glow bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            {d.home.titleB}
-          </span>
-        </motion.h1>
+          <motion.h1
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="font-display text-[1.9rem] font-extrabold leading-[1] tracking-tight break-words sm:text-6xl lg:text-7xl"
+          >
+            {d.home.titleA}
+            <br />
+            <span className="text-glow bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              {d.home.titleB}
+            </span>
+          </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="mt-6 max-w-xl text-lg text-muted"
-        >
-          {d.home.subtitle}
-        </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mt-6 max-w-xl text-lg text-muted"
+          >
+            {d.home.subtitle}
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="mt-8"
+          >
+            <Link
+              href="/a/bubble"
+              className="glow-primary inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 font-semibold text-white transition-transform hover:-translate-y-0.5"
+            >
+              {d.home.startCta}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </Link>
+          </motion.div>
+        </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
-          className="mt-8"
+          initial={{ opacity: 0, scale: 0.9, y: 16 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ delay: 0.2, type: "spring", stiffness: 200, damping: 22 }}
+          className="justify-self-center lg:justify-self-end"
         >
-          <Link
-            href="/a/bubble"
-            className="glow-primary inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 font-semibold text-white transition-transform hover:-translate-y-0.5"
-          >
-            {d.home.startCta}
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M5 12h14M13 6l6 6-6 6" />
-            </svg>
-          </Link>
+          <MascoteGuia />
         </motion.div>
       </section>
 
