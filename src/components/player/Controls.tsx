@@ -50,7 +50,7 @@ export function Controls(p: Props) {
         </IconButton>
       </div>
 
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+      <div className="flex w-full flex-wrap items-center justify-between gap-x-5 gap-y-3 sm:w-auto sm:justify-start">
         <Slider label={d.player.speed} value={p.speed} min={0} max={100} onChange={p.onSpeed} />
         <Slider label={d.player.size} value={p.size} min={8} max={80} onChange={p.onSize} />
         <button

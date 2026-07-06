@@ -141,7 +141,7 @@ export function Visualizer({ slug }: { slug: string }) {
   const Viz = VIZ[mode];
 
   return (
-    <div className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
+    <div className="mx-auto max-w-6xl overflow-x-hidden px-4 pb-24 sm:px-6">
       <div className="flex items-center justify-between gap-4 py-6">
         <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-ink">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>
@@ -163,7 +163,7 @@ export function Visualizer({ slug }: { slug: string }) {
         <p className="mt-1.5 max-w-2xl text-muted">{text.tagline}</p>
       </header>
 
-      <div className="mb-2 flex items-center justify-end gap-1">
+      <div className="mb-2 flex flex-wrap items-center justify-end gap-1">
         {MODES.map((m) => (
           <button
             key={m}
@@ -197,7 +197,7 @@ export function Visualizer({ slug }: { slug: string }) {
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_auto]">
         <Character text={line} mood={mood} />
-        <div className="flex items-center gap-2 font-mono text-xs text-muted">
+        <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-muted">
           <Stat label={d.player.comparisons} value={frame.stats.comparisons} />
           <Stat label={d.player.swaps} value={frame.stats.swaps} />
           {frame.stats.writes > 0 && <Stat label={d.player.writes} value={frame.stats.writes} />}

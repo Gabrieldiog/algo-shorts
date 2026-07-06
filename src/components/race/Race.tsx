@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { getSortAlgorithm, roster } from "@/lib/algorithms";
 import { Bars } from "@/components/viz/Bars";
+import { Select } from "@/components/ui/Select";
 import { useRacer, type Racer } from "./useRacer";
 
 const READY = roster.filter((r) => r.category === "sort" && r.ready).map((r) => r.slug);
@@ -89,7 +90,7 @@ export function Race() {
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
+    <div className="mx-auto max-w-6xl overflow-x-hidden px-4 pb-24 sm:px-6">
       <div className="py-6">
         <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-ink">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>
@@ -131,12 +132,16 @@ export function Race() {
             {d.race.shuffle}
           </button>
         </div>
-        <label className="flex items-center gap-2 text-xs font-medium text-muted">
-          <span className="uppercase tracking-wide">{d.player.speed}</span>
-          <input type="range" min={0} max={100} value={speed} onChange={(e) => setSpeed(Number(e.target.value))} className="h-1.5 w-32 cursor-pointer accent-primary" />
-          <span className="ml-3 uppercase tracking-wide">{d.player.size}</span>
-          <input type="range" min={8} max={80} value={size} onChange={(e) => onSize(Number(e.target.value))} className="h-1.5 w-32 cursor-pointer accent-primary" />
-        </label>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-medium text-muted">
+          <label className="flex items-center gap-2">
+            <span className="uppercase tracking-wide">{d.player.speed}</span>
+            <input type="range" min={0} max={100} value={speed} onChange={(e) => setSpeed(Number(e.target.value))} className="h-1.5 w-28 cursor-pointer accent-primary sm:w-32" />
+          </label>
+          <label className="flex items-center gap-2">
+            <span className="uppercase tracking-wide">{d.player.size}</span>
+            <input type="range" min={8} max={80} value={size} onChange={(e) => onSize(Number(e.target.value))} className="h-1.5 w-28 cursor-pointer accent-primary sm:w-32" />
+          </label>
+        </div>
       </div>
     </div>
   );
@@ -165,19 +170,14 @@ function Panel({
   return (
     <div className={`card relative overflow-hidden p-4 transition-shadow ${won ? "glow-primary" : ""}`}>
       <div className="mb-3 flex items-center justify-between gap-2">
-        <select
-          value={slug}
-          onChange={(e) => onPick(e.target.value)}
-          aria-label={side}
-          className="rounded-lg border border-line/70 bg-surface px-3 py-1.5 text-sm font-semibold text-ink outline-none focus:border-primary/60"
-        >
+        <Select value={slug} onChange={onPick} label={side}>
           {READY.map((s) => (
             <option key={s} value={s}>
               {d.algos[s].name}
             </option>
           ))}
-        </select>
-        <span className="font-mono text-xs text-muted">
+        </Select>
+        <span className="shrink-0 font-mono text-xs text-muted">
           <span className="text-ink">{racer.step}</span> {d.race.steps}
         </span>
       </div>
