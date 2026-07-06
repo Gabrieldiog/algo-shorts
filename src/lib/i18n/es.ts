@@ -66,6 +66,20 @@ export const es: Dict = {
     cta: "Modo carrera",
   },
   character: { intro: "Elige un algoritmo y dale play. Yo explico lo demás." },
+  guia: {
+    name: "Bit",
+    balloons: [
+      "¡Hola! Soy Bit, tu guía aquí en Algo Shorts.",
+      "Convertimos algoritmos en esos videos que se vuelven virales, pero ahora tú tienes el control.",
+      "Elige un algoritmo, dale play, y mira las barras bailar al ritmo, con sonido y narración.",
+      "Hay 26 tipos de ordenamiento: del clásico Bubble al Quantum Bogo, que destruye el universo si falla. Te juro que es broma.",
+      "Hay modo carrera para ver a dos competir, y cuatro formas de visualizar: barras, arcoíris, puntos y anillo.",
+      "¿Vamos? Dale a 'Ver el Bubble Sort' ahí al lado. ¡Yo te explico el resto en el camino!",
+    ],
+    next: "Siguiente",
+    skip: "Saltar",
+    replay: "Otra vez",
+  },
   algos: {
     bubble: {
       name: "Bubble Sort",
