@@ -1,0 +1,8 @@
+# Deploy estatico no Netlify. `next build` (com output: export) gera a pasta
+# `out/` com o site inteiro pronto, sem runtime nem serverless.
+[build]
+  command = "next build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "20"

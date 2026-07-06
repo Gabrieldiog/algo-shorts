@@ -1,7 +1,15 @@
 import { notFound } from "next/navigation";
-import { rosterEntry } from "@/lib/algorithms";
+import { roster, rosterEntry } from "@/lib/algorithms";
 import { Visualizer } from "@/components/player/Visualizer";
 import { PathViz } from "@/components/path/PathViz";
+
+// Pre-renderiza uma pagina por algoritmo: com static export, o site inteiro
+// vira HTML pronto (sem runtime), hospedavel em qualquer lugar.
+export function generateStaticParams() {
+  return roster.map((r) => ({ slug: r.slug }));
+}
+
+export const dynamicParams = false;
 
 export default async function AlgoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

@@ -15,6 +15,7 @@ export interface AlgoText {
   tagline: string;
   curiosity?: string;
   how?: string;
+  steps?: string[];
 }
 
 /** As falas do personagem, uma função por evento (a i18n vira a Note em texto). */
@@ -57,6 +58,7 @@ export interface Dict {
     startCta: string;
     watch: string;
     soon: string;
+    meme: string;
     stable: string;
     unstable: string;
     footer: string;
@@ -79,6 +81,15 @@ export interface Dict {
     step: string;
     finished: string;
     complexity: string;
+    complexityIntro: string;
+    inTime: string;
+    inMemory: string;
+    growthTitle: string;
+    growthNote: string;
+    items: string;
+    legend: string;
+    history: string;
+    historyEmpty: string;
     curiosity: string;
     howTitle: string;
     best: string;
@@ -87,6 +98,14 @@ export interface Dict {
     space: string;
     stability: string;
     target: string;
+  };
+  complexityTiers: Record<"constant" | "log" | "linear" | "linearithmic" | "quadratic" | "explosive", { name: string; time: string; space: string; read: string }>;
+  quantum: {
+    title: string;
+    odds: (n: string) => string;
+    note: string;
+    safe: string;
+    flavor: { hope: string; lottery: string; cosmic: string };
   };
   modes: { bars: string; rainbow: string; dots: string; circle: string };
   race: {
@@ -102,6 +121,13 @@ export interface Dict {
     cta: string;
   };
   character: { intro: string };
+  guia: {
+    name: string;
+    messages: string[];
+    next: string;
+    replay: string;
+    hint: string;
+  };
   path: {
     exploring: string;
     found: (n: number) => string;

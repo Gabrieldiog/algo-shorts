@@ -13,6 +13,11 @@ import { Dots } from "@/components/viz/Dots";
 import { Ring } from "@/components/viz/Ring";
 import { Controls } from "./Controls";
 import { Character, type Mood } from "./Character";
+import { ComplexityCard } from "./Complexity";
+import { HowCard } from "./HowCard";
+import { QuantumOdds } from "./QuantumOdds";
+import { SpeechHistory, type Line } from "./SpeechHistory";
+import { MemeBadge } from "@/components/ui/MemeBadge";
 import { useSounds } from "./useSounds";
 
 const VIZ = { bars: Bars, rainbow: Rainbow, dots: Dots, circle: Ring } as const;
@@ -67,6 +72,24 @@ export function Visualizer({ slug }: { slug: string }) {
   }, [input, target, isSearch, searchAlgo, sortAlgo]);
 
   const max = input && input.length ? Math.max(...input) : 1;
+
+  // Transcricao das falas ate o passo atual: uma linha por narracao nova
+  // (pula repetidas seguidas). Deriva dos moves, entao acompanha o scrub tambem.
+  const history = useMemo<Line[]>(() => {
+    const out: Line[] = [];
+    let prev = "";
+    const upto = Math.min(step, moves.length);
+    for (let i = 0; i < upto; i++) {
+      const note = moves[i].note;
+      if (!note) continue;
+      const text = say(note);
+      if (text !== prev) {
+        out.push({ step: i + 1, text });
+        prev = text;
+      }
+    }
+    return out;
+  }, [moves, step, say]);
 
   const frameRef = useRef(frame);
   const stepRef = useRef(step);
@@ -182,7 +205,10 @@ export function Visualizer({ slug }: { slug: string }) {
       </div>
 
       <header className="mb-5">
-        <h1 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{text.name}</h1>
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{text.name}</h1>
+          {entry.meme && <MemeBadge className="text-xs" />}
+        </div>
         <p className="mt-1.5 max-w-2xl text-muted">{text.tagline}</p>
       </header>
 
@@ -240,6 +266,10 @@ export function Visualizer({ slug }: { slug: string }) {
         </div>
       </div>
 
+      <div className="mt-3">
+        <SpeechHistory lines={history} />
+      </div>
+
       <div className="mt-4">
         <Controls
           playing={playing}
@@ -265,29 +295,17 @@ export function Visualizer({ slug }: { slug: string }) {
         />
       </div>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-2">
-        <div className="card p-5">
-          <h2 className="mb-4 font-display text-lg font-bold">{d.player.complexity}</h2>
-          <div className="grid grid-cols-2 gap-3">
-            <BigO label={d.player.best} value={entry.complexity.best} />
-            <BigO label={d.player.avg} value={entry.complexity.avg} highlight />
-            <BigO label={d.player.worst} value={entry.complexity.worst} />
-            <BigO label={d.player.space} value={entry.complexity.space} />
-          </div>
-          {entry.stable !== undefined && (
-            <p className="mt-4 text-sm text-muted">
-              {d.player.stability}: <span className="text-ink">{entry.stable ? d.home.stable : d.home.unstable}</span>
-            </p>
-          )}
+      {entry.universeRisk && (
+        <div className="mt-6">
+          <QuantumOdds array={frame.array} />
         </div>
+      )}
+
+      <div className="mt-8 grid gap-4 md:grid-cols-2">
+        <ComplexityCard complexity={entry.complexity} stable={entry.stable} />
 
         <div className="flex flex-col gap-4">
-          {text.how && (
-            <div className="card p-5">
-              <h2 className="mb-2 font-display text-lg font-bold">{d.player.howTitle}</h2>
-              <p className="text-sm leading-relaxed text-muted">{text.how}</p>
-            </div>
-          )}
+          <HowCard how={text.how} steps={text.steps} />
           {text.curiosity && (
             <div className="card border-accent/30 p-5">
               <h2 className="mb-2 font-display text-lg font-bold text-accent">{d.player.curiosity}</h2>
@@ -305,15 +323,6 @@ function Stat({ label, value }: { label: string; value: number }) {
     <span className="rounded-md bg-surface-2/70 px-2 py-1">
       <span className="text-ink">{value}</span> <span className="text-[10px] uppercase tracking-wide">{label}</span>
     </span>
-  );
-}
-
-function BigO({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
-  return (
-    <div className={`rounded-lg border p-3 ${highlight ? "border-primary/40 bg-primary/5" : "border-line/60"}`}>
-      <div className="text-[11px] uppercase tracking-wide text-muted">{label}</div>
-      <div className={`mt-0.5 font-mono text-lg font-semibold ${highlight ? "text-primary" : "text-ink"}`}>{value}</div>
-    </div>
   );
 }
 
