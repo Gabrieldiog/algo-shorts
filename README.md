@@ -6,6 +6,8 @@ bipes — mas aqui você não só assiste: dá play, pausa, avança passo a pass
 a velocidade e escolhe o algoritmo. Cada etapa é narrada por um guia que explica,
 em linguagem humana, o que está acontecendo e por quê.
 
+**Ver ao vivo:** [algoshorts.netlify.app](https://algoshorts.netlify.app)
+
 Projeto de portfólio. O objetivo não é a quantidade de algoritmos, e sim a camada
 que fica no meio: uma engine que separa a lógica da renderização de forma limpa o
 bastante pra que adicionar um algoritmo novo seja escrever uma função e
